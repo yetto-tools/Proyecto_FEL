@@ -185,6 +185,9 @@ require_once "config.php";
                         <div class="col col-md-4  bg-light mt-2"><p class="fw-bolder">Total Q.</p></div>
                         <div class="col col-md-5 ms-3 mt-2"><input type="number" id="total" name="total" min="0.1" value="0.00" step="any" class="form-control form-control-sm" class="form-control form-control-sm" disabled readonly required></div>
                       </div>
+                      <div class="row d-flex justify-content-center">
+                        <div class="col col-md-9 mt-2 text-center d-grid gap-2 "><input type="button" class="btn btn-sm btn-success" value="Firmar" /></div>
+                      </div>
                     </div>
                 </div>
               </div>
