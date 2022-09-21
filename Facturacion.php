@@ -106,7 +106,7 @@ require_once "config.php";
                   <div class="col-md-6">
                     <div class="row mb-3">
                       <div class="col  pe-0">
-                          <input type="text" id="nit" name="nit" class="form-control form-control-sm" placeholder="NIT" required>
+                          <input type="text" id="nit" name="nit" class="form-control form-control-sm mb-2" placeholder="NIT" required>
                       </div>
                       <div class="col-auto ps-1">
                           <input type="button" id="buscar" name="buscar" class="btn btn-sm btn-primary" value="&#128269;">
