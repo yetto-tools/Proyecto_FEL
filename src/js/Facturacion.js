@@ -21,11 +21,11 @@ botonAgregar.addEventListener('click', (e)=>{
 			<td><input type="number" name="cantidad" min="1" value="1" class="form-control form-control-sm" required></td>
 			<td><input type="number" name="precio" min="0.1" value="0.00" step="any" class="form-control form-control-sm" required></td>
 			<td><input type="number" name="monto" min="0.1" value="0.00" step="any" class="form-control form-control-sm" disabled readonly required></td>
-			<th scope="row"><input type="button" name="quitar" class="btn btn-sm btn-danger" value="&Cross;"/></th>
+			<th class="text-center"><input type="button" name="quitar" class="btn btn-sm btn-danger" value="&Cross;"/></th>
 			</tr> 
 		`
 	);
-	document.querySelector("#\\31  > th:nth-child(7) > input").classList.remove('disabled');
+	document.querySelector("#\\31  > th.text-center > input").classList.remove('disabled');
 	ListaProductos.lastElementChild.scrollIntoView({behavior: "smooth", block: 'nearest', inline: 'start' });
 	ListaProductos.lastElementChild.querySelector('input[name="producto"]').focus();
 
@@ -54,7 +54,7 @@ ListaProductos.addEventListener('click', (e)=>{
 		}
 	}
 	if (indice == 2 ){
-		document.querySelector("#\\31  > th:nth-child(7) > input").classList.add('disabled');
+		document.querySelector("#\\31  > th.text-center > input").classList.add('disabled');
 	}
 
 

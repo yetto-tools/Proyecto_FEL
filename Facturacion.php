@@ -83,8 +83,8 @@ require_once "config.php";
 	<div class="container-fluid">
     <div class="row mt-5 d-flex justify-content-center">
       <div class="col col-md-9">
-          <h6 class="bg-dark text-white text-center my-0"><span class="mx-2">F a c t u r a c i o n</span><span class="mx-2"> E l e c t r o n i c a</span></h6>
-          <form class="shadow-lg p-3 mb-5 bg-white rounded"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" >
+          <h4 class="bg-dark text-white text-center mb-0 py-1"><div class="mb-0"><span class="mx-2">F a c t u r a c i o n</span><span class="mx-2"> E l e c t r o n i c a</span></div></h4>
+          <form class="shadow-lg p-4 mb-5 bg-white rounded"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" >
             <div class="row mb-4">
               <div class="col col-md-6 ">
                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH0AAACACAQAAACMha5pAAAAlklEQVR42u3PAQ0AAAwCoNu/9Gu4CQ3IzYq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6unqXBx4gAIE1+BdCAAAAAElFTkSuQmCC" class="img-fluid img-thumbnail rounded mx-auto d-block border" alt="logo" width="128" height="128">
@@ -167,43 +167,25 @@ require_once "config.php";
               </div>
             </div>
             <div class="row mb-4 ">
-              <div class="col col-md-2 mb-4 pe-0">
+              <div class="col col-md-2 mb-4">
                 <input type="button" id="agregar" name="agregar" class="btn btn-sm btn-primary" value="+"/>
               </div>
               <div class="col col-md-10 ">
-                <!-- <div class="row d-flex justify-content-end"> -->
-                <div class="row">
-                    <div class="col col-md-2 bg-light">
-                      <input type="number" id="subtotal" name="Subtotal" min="0.1" value="0.00" step="any" class="form-control form-control-sm" disabled readonly required hidden>
-                    </div>
-                    <div class="col col-md-2">
-                      <input type="number" id="subtotal" name="Subtotal" min="0.1" value="0.00" step="any" class="form-control form-control-sm" disabled readonly required>
-                    </div>
-                    <div class="col col-md-1 me-0"></div>
-                    <div class="d-flex justify-content-end">
-                  </div>
-
-                <!--                   
-                  <div class="col col-md-5 border">
-                    <div class="row  me-0">
-                      <div class="col col-md-6 bg-light align-text-bottom"></div>
-                      <div class="col col-md-5">
+                <div class="row d-flex justify-content-end ">
+                    <div class="col col-md-6">
+                      <div class="row d-flex justify-content-center">
+                        <div class="col col-md-4 bg-light"><p class="fw-bolder">SubTotal Q.</p></div>
+                        <div class="col col-md-5 ms-3"><input type="number" id="subtotal" name="Subtotal" min="0.1" value="0.00" step="any" class="form-control form-control-sm" disabled readonly required></div>
                       </div>
-                    </div> 
-                    <div class="row me-0">
-                      <div class="col col-md-6 bg-light align-text-bottom"><p class="fw-bolder">Descuento Q.</p></div>
-                      <div class="col col-md-5">
-                        <input type="number" id="descuento" name="Descuento" min="0.0" value="0.00" step="any" class="form-control form-control-sm" class="form-control form-control-sm" required>
+                      <div class="row d-flex justify-content-center">
+                        <div class="col col-md-4  bg-light  bg-light border-2 border-bottom border-dark"><p class="fw-bolder">Desc. Q.</p></div>
+                        <div class="col col-md-5 ms-3"><input type="number" id="descuento" name="Descuento" min="0.0" value="0.00" step="any" class="form-control form-control-sm" class="form-control form-control-sm" required></div>
+                      </div>
+                      <div class="row d-flex justify-content-center">
+                        <div class="col col-md-4  bg-light mt-2"><p class="fw-bolder">Total Q.</p></div>
+                        <div class="col col-md-5 ms-3 mt-2"><input type="number" id="total" name="total" min="0.1" value="0.00" step="any" class="form-control form-control-sm" class="form-control form-control-sm" disabled readonly required></div>
                       </div>
                     </div>
-                    <div class="row me-0">
-                      <div class="col col-md-6 bg-light align-text-bottom"><p class="fw-bolder">Total Q.</p></div>
-                      <div class="col col-md-5">
-                        <input type="number" id="total" name="total" min="0.1" value="0.00" step="any" class="form-control form-control-sm" class="form-control form-control-sm" disabled readonly required>
-                      </div>
-                    </div>
-                  </div>
-                  -->            
                 </div>
               </div>
             </div>
