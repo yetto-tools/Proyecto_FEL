@@ -1,14 +1,17 @@
 <?php
 // Inicializar la sesión
 session_start();
-if (!isset($_SESSION["login"])){
-     header("location: login.php");
-  }
-  else{
-  $nombre_usuario = $_SESSION["nombre_usuario"];
-  $login          = $_SESSION["login"];
-  $tipo_usuario   = $_SESSION["tipo_usuario"];
-  $empresa        = $_SESSION['nombre_empresa'];
+
+if (!isset($_SESSION["loggedin"])){
+  header("location: login.php");
+}
+else{
+  $nombre_usuario = $_SESSION["usuario"]["usuario_nombre"];
+  $login          = $_SESSION["usuario"]["correo"];
+  $tipo_usuario   = $_SESSION["usuario"]["role"];
+  $empresa        = $_SESSION["usuario"]['empresa_nombre'];
+  $imagen_logo    = $_SESSION["usuario"]['imagen_logo'];
+  $logo           = "data:".$_SESSION["usuario"]['imagen_formato'].";base64,".$_SESSION["usuario"]['imagen_logo'];
 }
 
 require_once "config.php";
@@ -19,75 +22,20 @@ require_once "config.php";
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-	 <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Facturacion</title>
-  <?php include("link.php")?>
+<?php include("link.php")?>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="index.php"><?php echo $empresa ?></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle <?php echo opcion_activa()['is_active']; ?>" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <?php echo opcion_activa()['endpoint']; ?>
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="#"></a></li>
-            <li><a class="dropdown-item <?php echo opcion_activa()['is_active']; ?>" href="Facturacion.php">Facturacion</a></li>
-            <li><a class="dropdown-item" href="Certificacion.php">Certificacion</a></li>
-          </ul>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Reportes
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="reporte_cliente.php">Reporte Cliente</a></li>
-            <li><a class="dropdown-item" href="repote_general.php">Reporte General</a></li>
-            <li><a class="dropdown-item" href="repote_estatus.php">Reporte Estatus</a></li>
-            <li><a class="dropdown-item" href="reporte_sat.php">Reporte SAT</a></li>
-          </ul>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Otro Menu
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="#"></a></li>
-            <li><a class="dropdown-item" href="#">Otra acción</a></li>
-            <li><a class="dropdown-item" href="#">otro accion</a></li>
-          </ul>
-        </li>
-      </ul>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link active"><?php echo $nombre_usuario ." (". $tipo_usuario . ")"; ?></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="logout.php">Salir</a>
-          </li>
-        </ul>
-      </div>    
-    </div>
-  </div>
-</nav>
+  <?php include("navbar.php") ?>
 	<div class="container-fluid">
     <div class="row mt-5 d-flex justify-content-center">
       <div class="col col-md-9">
           <h4 class="bg-dark text-white text-center mb-0 py-1"><div class="mb-0"><span class="mx-2">F a c t u r a c i o n</span><span class="mx-2"> E l e c t r o n i c a</span></div></h4>
           <form class="shadow-lg p-4 mb-5 bg-white rounded"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" >
             <div class="row mb-4">
-              <div class="col col-md-6 ">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH0AAACACAQAAACMha5pAAAAlklEQVR42u3PAQ0AAAwCoNu/9Gu4CQ3IzYq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6unqXBx4gAIE1+BdCAAAAAElFTkSuQmCC" class="img-fluid img-thumbnail rounded mx-auto d-block border" alt="logo" width="128" height="128">
+              <div class="col col-md-6">
+                <img src="<?php echo $logo ?>" class="rounded mx-auto d-block" alt="logo" width="160" height="128">
               </div>
               <div class="col col-md-6">
                 <div class="row">
