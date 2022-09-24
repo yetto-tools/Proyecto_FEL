@@ -6,9 +6,9 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav">
-        <li class="navbar-brand"><?php echo opcion_activa()['endpoint']; ?> / </li>
+        <li class="navbar-brand"><span class="badge bg-secondary"> / <?php echo opcion_activa()['endpoint']; ?></span></li>
       </ul>
-      <ul class="navbar-nav">
+      <ul class="navbar-nav"> 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle <?php echo opcion_activa()['is_active']; ?>" href="Inicio.php" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Menu

@@ -1,6 +1,7 @@
 <?php
 // Inicializar la sesión
 session_start();
+require_once "config.php";
 
 if (!isset($_SESSION["loggedin"])){
   header("location: login.php");
@@ -10,9 +11,12 @@ else{
   $login          = $_SESSION["usuario"]["correo"];
   $tipo_usuario   = $_SESSION["usuario"]["role"];
   $empresa        = $_SESSION["usuario"]['empresa_nombre'];
+  $logo           = "data:".$_SESSION["usuario"]['imagen_formato'].";base64,".$_SESSION["usuario"]['imagen_logo'];
 }
-require_once "config.php";
 
+//echo '<pre>';
+//var_dump($_SESSION);
+//echo '</pre>';
 ?>
 
 <!DOCTYPE html>
@@ -22,13 +26,11 @@ require_once "config.php";
 </head>
 <body>
   <?php include("navbar.php") ?>
-	<div class="container">
-		<div class="text-center">
-			<h1>Certificacion</h1>
-		</div>
-    <div class="row">
-      <div class="col col-md-2"></div>
-      <div class="col col-md-8">
+    <div class="container-fluid">
+    <div class="row mt-5 d-flex justify-content-center">
+      <div class="col col-md-9">
+          <h4 class="bg-dark text-white text-center mb-0 py-1"><div class="mb-0"><span class="mx-2"> C e r t i f i c a c i o n</span></div></h4>
+
           <form class="shadow-lg p-3 mb-5 bg-white rounded">
             <div class="row">
               <div class="col-2">
