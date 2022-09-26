@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="Inicio.php"><img src="<?php echo empty($logo) ? "" : $logo; ?>"  width="48" height="32" /></a>
+    <a class="navbar-brand" href="Inicio.php"><img class="img-circle rounded" src="<?php echo empty($empresa['logo']) ? "" : $empresa['logo']; ?>"  width="48" height="32" /></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -11,7 +11,7 @@
       <ul class="navbar-nav"> 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle <?php echo opcion_activa()['is_active']; ?>" href="Inicio.php" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Menu
+            Menu Principal
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <li><a class="dropdown-item" href="Inicio.php">Inicio</a></li>
@@ -45,7 +45,7 @@
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle active" href="#" id="usuarioActivo" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <?php echo $nombre_usuario." Role: "." [". $tipo_usuario . "]" ; ?>
+            <?php echo $nombre_usuario." Role: "." [". $role . "]" ; ?>
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <li><a class="dropdown-item" href="logout.php">Salir</a></li>
