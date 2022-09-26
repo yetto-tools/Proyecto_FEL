@@ -1,24 +1,9 @@
 <?php
 // Inicializar la sesión
 session_start();
-
-if (!isset($_SESSION["loggedin"])){
-  header("location: login.php");
-}
-else{
-  $nombre_usuario = $_SESSION["usuario"]["usuario_nombre"];
-  $login          = $_SESSION["usuario"]["correo"];
-  $tipo_usuario   = $_SESSION["usuario"]["role"];
-  $empresa        = $_SESSION["usuario"]['empresa_nombre'];
-  $imagen_logo    = $_SESSION["usuario"]['imagen_logo'];
-  $logo           = "data:".$_SESSION["usuario"]['imagen_formato'].";base64,".$_SESSION["usuario"]['imagen_logo'];
-}
-
 require_once "config.php";
+require_once "session_config.php"
 
-//echo '<pre>';
-//var_dump($_SESSION);
-//echo '</pre>';
 ?>
 
 <!DOCTYPE html>
@@ -30,20 +15,20 @@ require_once "config.php";
   <?php include("navbar.php") ?>
 	<div class="container-fluid">
     <div class="row mt-5 d-flex justify-content-center">
-      <div class="col col-md-9">
+      <div class="col col-md-auto">
           <h4 class="bg-dark text-white text-center mb-0 py-1"><div class="mb-0"><span class="mx-2">F a c t u r a c i o n</span><span class="mx-2"> E l e c t r o n i c a</span></div></h4>
           <form class="shadow-lg p-4 mb-5 bg-white rounded"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" >
             <div class="row mb-4">
               <div class="col col-md-6">
-                <img src="<?php echo $logo ?>" class="rounded mx-auto d-block" alt="logo" width="160" height="128">
+                <img src="<?php echo $empresa['logo'] ?>" class="img-circle rounded mx-auto d-block" alt="logo" width="160" height="128">
               </div>
               <div class="col col-md-6">
                 <div class="row">
-                  <p id="nitFacturacion" name="nitFacturacion" class="h6">Su NIT</p>
-                  <p id="nombreFacturacion" name="nombreFacturacion" class="h6">Su Empresa</p>
-                  <p id="direccionFacturacion" name="direccionFacturacion" class="h6">Su Direccion</p>
-                  <p id="" name="" class="h6">Guatemala,Guatemala</p>
-                  <p id="TelefonoFacturacion" name="TelefonoFacturacion" class="h6">(502) 5555-5555</p>
+                  <p id="nitFacturacion" name="nitFacturacion" class="h6"><span class="fw-bold me-3 text-end"><?php echo htmlspecialchars($empresa["nit"]); ?></span></p>
+                  <p id="nombreFacturacion" name="nombreFacturacion" class="h6"><span class="fw-bold me-3 text-end"><?php echo htmlspecialchars($empresa["nombre"]); ?></span></p>
+                  <p id="direccionFacturacion" name="direccionFacturacion" class="h6"><span class="fw-bold me-3 text-end"><?php echo htmlspecialchars($empresa["direccion"]);?></span></p>
+                  <p id="ciudadPaisFacturacion" name="ciudadPaisFacturacion" class="h6"><span class="fw-bold me-3 text-end"><?php echo $empresa["ciudad"].", ". htmlspecialchars($empresa["pais"]); ?></span></p>
+                  <p id="TelefonoFacturacion" name="TelefonoFacturacion" class="h6"><span class="fw-bold me-3 text-end"><?php echo htmlspecialchars($empresa["telefono"]); ?></span></p>
                 </div>
               </div>
             </div>
@@ -104,7 +89,7 @@ require_once "config.php";
                     <tr id="1" name="linea">
                       <th scope="row" name="numero">1</th>
                       <td ><input type="text" name="producto" class="form-control form-control-sm" placeholder="Codigo" required></td>
-                      <td ><textarea name="descripcion"  rows="1" class="form-control form-control-sm" placeholder="Descripcion" required></textarea></td>
+                      <td name="descripcion"><textarea name="descripcion" rows="1" class="form-control form-control-sm" placeholder="Descripcion" required></textarea></td>
                       <td ><input type="number" name="cantidad" min="1" value="1" class="form-control form-control-sm"></td>
                       <td ><input type="number" name="precio" min="0.1" value="0.00" step="any" class="form-control form-control-sm" required></td>
                       <td ><input type="number" name="monto" min="0.1" value="0.00" step="any" class="form-control form-control-sm" disabled readonly required></td>
