@@ -1,6 +1,6 @@
 body{
   font: 14px sans-serif;
-    background-color:  #fbfbfb; /*rgb(229, 231, 235); /* #e5e7eb;*/
+    background-color:  #f1f3f4; /*#fbfbfb; rgb(229, 231, 235);  #e5e7eb;*/
   }
 /* color de tabla cursor encima*/
 .table-hover tbody tr:hover {
@@ -9,13 +9,13 @@ body{
 
 /* personalizacion de tabla productos */
 
-#header-productos> tr > th:nth-child(2),  tr > th:nth-child(4){
+#header-productos> tr > th:nth-child(2), #header-productos >  tr > th:nth-child(4){
   width: 12%;
 }
-#header-productos > tr > th:nth-child(5), tr > th:nth-child(6){
+#header-productos > tr > th:nth-child(5), #header-productos > tr > th:nth-child(6){
   width: 15%;
 }
-#header-productos > tr > th:nth-child(7), tr > th.text-center{
+#header-productos > tr > th:nth-child(7), #header-productos > tr > th.text-center{
   width: 5%;
   margin: 0;
   padding-right: 3px;
@@ -33,6 +33,18 @@ body{
 
 /* fin de personalizacion de tabla productos */
 
-/*#listaTotal > tr> td{
-  width: 20%;
-*/}
+.img-circle {
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+}
+.no-show{
+  display: none;
+}
+
+.small{
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: .875em;
+  color: #196d87;
+}
