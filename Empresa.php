@@ -45,7 +45,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       fclose($read);
       try{
       $db->begin_transaction(/*MYSQLI_TRANS_START_READ_ONLY*/);
-          $db->query("INSERT INTO `imagen` (`id`, `nombre`, `tamaño`, `formato`) VALUES ('$toImgBase64','$imagen_nombre','$imagen_tamaño','$imagen_formato')");
+          $db->query("INSERT INTO `imagen` (`logo`, `nombre`, `tamaño`, `formato`) 
+          VALUES ('$toImgBase64','$imagen_nombre','$imagen_tamaño','$imagen_formato')");
           // recuperamos el id de la imagen insertada
           $logo_id = $db->insert_id;
           echo $db->insert_id;
