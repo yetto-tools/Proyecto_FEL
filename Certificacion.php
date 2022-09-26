@@ -2,22 +2,9 @@
 // Inicializar la sesión
 session_start();
 require_once "config.php";
-
-if (!isset($_SESSION["loggedin"])){
-  header("location: login.php");
-}
-else{
-  $nombre_usuario = $_SESSION["usuario"]["usuario_nombre"];
-  $login          = $_SESSION["usuario"]["correo"];
-  $tipo_usuario   = $_SESSION["usuario"]["role"];
-  $empresa        = $_SESSION["usuario"]['empresa_nombre'];
-  $logo           = "data:".$_SESSION["usuario"]['imagen_formato'].";base64,".$_SESSION["usuario"]['imagen_logo'];
-}
-
-//echo '<pre>';
-//var_dump($_SESSION);
-//echo '</pre>';
+require_once "session_config.php";
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
