@@ -1,36 +1,21 @@
 <?php
 // Inicializar la sesión
 session_start();
+require_once "config.php";
 
-// Comprueba si el usuario ya ha iniciado la sesión, en caso afirmativo, redirígelo a la página de bienvenida
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-  header("location: inicio.php");
-  exit;
+//if (!isset($_SESSION["loggedin"])){
+if (session_status() !== PHP_SESSION_ACTIVE){
+  header("location: login.php");
 }
 
 $_SERVER['error'] = "";
 
 
 // Include config file
-require_once "config.php";
+
 
 // Definir variables e inicializar con valores vacíos
-// $id ="";
-// $login = "";
 $correo = ""; 
-// $password= "";
-// $role ="";
-// $usuario_nombre = "";
-// $usuario_direccion = "";
-// $usuario_telefono = "";
-// $empresa_nit = "";
-// $empresa_nombre =  "";
-// $empresa_direccion = "";
-// $empresa_telefono = "";
-// $imagen_logo = "";
-// $imagen_tamaño = "";
-// $omiso = "";
-// $factura_omiso = "";
 $email_err = "";
 $password_err = "";
 $login_err = "";
@@ -65,6 +50,8 @@ s.nombre,
 e.nit,
 e.nombre,
 e.direccion,
+e.ciudad,
+e.pais,
 e.telefono,
 i.logo,
 i.formato,
@@ -94,6 +81,8 @@ WHERE u.correo =?";
           $empresa_nit, 
           $empresa_nombre,
           $empresa_direccion,
+          $empresa_ciudad,
+          $empresa_pais,
           $empresa_telefono,
           $imagen_logo,
           $imagen_formato,
@@ -103,19 +92,22 @@ WHERE u.correo =?";
         $stmt->fetch();
         // verificamos password
         if(password_verify($password, $hashed_password)){
-          // session_start();
-          $_SESSION["loggedin"] = true;
+          session_start();
           $_SESSION['usuario'] = array(
           "id"=>$id,
           "correo"=>$correo,
           "role"=>$role,
           "usuario_nombre"=>$usuario_nombre, 
-          "empresa_nit"=>$empresa_nit, 
-          "empresa_nombre"=>$empresa_nombre,
-          "empresa_direccion"=>$empresa_direccion,
-          "empresa_telefono"=>$empresa_telefono,
-          "imagen_logo"=>$imagen_logo,
-          "imagen_formato"=>$imagen_formato,
+          "empresa" =>
+            array(
+              "nit"=>$empresa_nit, 
+              "nombre"=>$empresa_nombre,
+              "direccion"=>$empresa_direccion,
+              "ciudad"=>$empresa_ciudad,
+              "pais"=>$empresa_pais,
+              "telefono"=>$empresa_telefono,
+              "logo" => "data:".$imagen_formato.";base64,".$imagen_logo 
+            ),
           "omiso"=>$omiso,
           "factura_omiso"=>$factura_omiso  
           );
@@ -153,10 +145,10 @@ WHERE u.correo =?";
 </head>
 <body>
   <div class="container">
-    <div class="d-flex justify-content-center">
-      <div class="col col-md-4">
+    <div class="m-0 vh-100 row justify-content-center align-items-center">
+      <div class="col col-auto">
         <div class="row mt-5">
-          <div class="card-body shadow-lg p-5 mb-5 bg-body rounded">
+          <div class="card-body shadow-lg p-5 mb-5 bg-body rounded border">
             <h2 class="display-4 text-center">LOGIN</h2>
             <div class="text-center"><small class="text-muted">Por favor complete este formulario para ingresar a su cuenta.</small></div>
             <div class="row">

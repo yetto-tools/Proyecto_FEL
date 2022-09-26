@@ -1,19 +1,7 @@
 <?php
 session_start();
-
-if (!isset($_SESSION["loggedin"])){
-  header("location: login.php");
-}
-else{
-  $nombre_usuario = $_SESSION["usuario"]["usuario_nombre"];
-  $login          = $_SESSION["usuario"]["correo"];
-  $tipo_usuario   = $_SESSION["usuario"]["role"];
-  $empresa        = $_SESSION["usuario"]['empresa_nombre'];
-  $imagen_logo    = $_SESSION["usuario"]['imagen_logo'];
-  $imagen_tipo    = $_SESSION["usuario"]['imagen_formato'];
-}
-
 require_once "config.php";
+require_once "session_config.php";
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     var_dump($_FILES['imagen']);
@@ -28,7 +16,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $buffer = fread($read, $imagen_tamaño);
         $toImgBase64 = base64_encode($buffer);
         fclose($read);
-
+    
         //Insert imagen datos binario
         $insert = $db->query("INSERT into imagen (logo,nombre,tamaño,formato) VALUES ('$toImgBase64','$imagen_nombre','$imagen_tamaño','$imagen_formato')");
         
