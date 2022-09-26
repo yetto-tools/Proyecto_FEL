@@ -9,7 +9,7 @@
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-SET time_zone = "+00:00";
+SET time_zone = "+06:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -18,10 +18,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `proyect_fell`
+-- Base de datos: `proyect_fel`
 --
-CREATE DATABASE IF NOT EXISTS `proyect_fell` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `proyect_fell`;
+CREATE DATABASE IF NOT EXISTS `proyect_fel` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `proyect_fel`;
 
 -- --------------------------------------------------------
 
@@ -34,6 +34,8 @@ CREATE TABLE `cliente` (
   `nit_cliente` varchar(15) NOT NULL,
   `nombre_cliente` varchar(150) NOT NULL,
   `direccion` varchar(150) NOT NULL,
+  `ciudad` varchar(150) NOT NULL,
+  `pais` varchar(90) NOT NULL,
   `telefono` varchar(15) NOT NULL,
   `verificado` tinyint(1) NOT NULL DEFAULT 0,
   `omisos` int(11) UNSIGNED DEFAULT 0,
@@ -51,7 +53,9 @@ CREATE TABLE `empresa` (
   `id` int(11) UNSIGNED NOT NULL,
   `nit` varchar(15) NOT NULL,
   `nombre` varchar(15) NOT NULL,
-  `direccion` varchar(15) NOT NULL,
+  `direccion` varchar(150) NOT NULL,
+  `ciudad` varchar(150) NOT NULL,
+  `pais` varchar(90) NOT NULL,
   `telefono` varchar(15) NOT NULL,
   `logo_id` int(11) UNSIGNED DEFAULT NULL,
   `actualizado` datetime DEFAULT NULL ON UPDATE current_timestamp(),
@@ -385,6 +389,8 @@ CREATE TABLE `cliente` (
   `nit_cliente` varchar(15) NOT NULL,
   `nombre_cliente` varchar(150) NOT NULL,
   `direccion` varchar(150) NOT NULL,
+  `departamento` varchar(90) NULL,
+  `municipio` varchar(150) NULL,
   `telefono` varchar(15) NOT NULL,
   `verificado` tinyint(1) NOT NULL DEFAULT 0,
   `omisos` int(11) UNSIGNED DEFAULT 0,
@@ -402,7 +408,9 @@ CREATE TABLE `empresa` (
   `id` int(11) UNSIGNED NOT NULL,
   `nit` varchar(15) NOT NULL,
   `nombre` varchar(15) NOT NULL,
-  `direccion` varchar(15) NOT NULL,
+  `direccion` varchar(150) NOT NULL,
+  `ciudad` varchar(150) NOT NULL,
+  `pais` varchar(90) NOT NULL,
   `telefono` varchar(15) NOT NULL,
   `logo_id` int(11) UNSIGNED DEFAULT NULL,
   `actualizado` datetime DEFAULT NULL ON UPDATE current_timestamp(),
@@ -413,8 +421,8 @@ CREATE TABLE `empresa` (
 -- Volcado de datos para la tabla `empresa`
 --
 
-INSERT INTO `empresa` (`id`, `nit`, `nombre`, `direccion`, `telefono`, `logo_id`, `actualizado`, `creado`) VALUES
-(1, '9876543-k', 'DigitSAT', 'Ciudad de Guate', '+502 2523-6997', 1, '2022-09-24 08:35:35', '2022-09-24 07:25:17');
+INSERT INTO `empresa` (`id`, `nit`, `nombre`, `direccion`, `ciudad`, `pais`, `telefono`, `logo_id`, `actualizado`, `creado`) VALUES
+(1, '9876543-7', 'DigitSAT', '9 Avenida 9-89, Zona 9', 'Guatemala', 'Guatemala', '+502 2523-6997', 1, '2022-09-24 08:35:35', '2022-09-24 07:25:17');
 
 -- --------------------------------------------------------
 
@@ -446,7 +454,7 @@ CREATE TABLE `factura` (
 
 CREATE TABLE `imagen` (
   `id` int(11) UNSIGNED NOT NULL,
-  `logo` longblob NOT NULL,
+  `logo` longblob  DEFAULT "",
   `nombre` varchar(50) NOT NULL,
   `tamaño` varchar(20) NOT NULL,
   `formato` varchar(20) NOT NULL,
@@ -530,7 +538,7 @@ CREATE TABLE `role` (
 --
 
 INSERT INTO `role` (`id`, `role`, `actualizado`, `creado`) VALUES
-(1, 'SysAdmin', '2022-09-23 16:25:19', '2022-09-23 08:22:33'),
+(1, 'SysAdmin', NULL, '2022-09-23 08:22:33'),
 (2, 'Staff', NULL, '2022-09-23 08:22:33'),
 (3, 'cliente', NULL, '2022-09-23 08:22:33');
 
