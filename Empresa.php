@@ -29,40 +29,66 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $departamento = trim($_POST["nuevo-departamento"]);
     $municipio = trim($_POST["nuevo-municipio"]);
 
-    /* NULL, '989898-9', 'Solucom, S.A.', '10 avenida 5-48, Nueva Monserrat Zona 4 Mixco', 'Guatemala', 'Guatemala', '7892-6896', NULL */
-
-    // funcion para grabar si hay una imagen 
-    if(!empty($_FILES['nuevo-logo'])){
-      //leemos almacemanos los datos en variables
-      $imagen_nombre   = $_FILES["nuevo-logo"]["name"];
-      $imagen_data     = $_FILES["nuevo-logo"]["tmp_name"];
-      $imagen_tamaño   = $_FILES["nuevo-logo"]["size"];
-      $imagen_formato  = $_FILES["nuevo-logo"]["type"];
-      // leemos la imagen y la converitmos en base64
-      $read = fopen($imagen_data, "rb");
-      $buffer = fread($read, $imagen_tamaño);
-      $toImgBase64 = base64_encode($buffer);
-      fclose($read);
+    echo "$id";
+    if($id >= 1 ){
+      
       try{
-      $db->begin_transaction(/*MYSQLI_TRANS_START_READ_ONLY*/);
-          $db->query("INSERT INTO `imagen` (`logo`, `nombre`, `tamaño`, `formato`) 
-          VALUES ('$toImgBase64','$imagen_nombre','$imagen_tamaño','$imagen_formato')");
-          // recuperamos el id de la imagen insertada
-          $logo_id = $db->insert_id;
-          echo $db->insert_id;
-          // insertamos los datos de empresa en la tabla
-          $db->query("INSERT INTO `empresa` 
-          (`id`, `nit`, `nombre`, `direccion`, `ciudad`, `pais`, `telefono`, `logo_id`) 
-          VALUES ('$id', '$nit', '$empresa', '$direccion',  '$municipio',  '$departamento',  '$telefono',  '$logo_id')");
+        //UPDATE `empresa` SET `direccion` = '1 Calle 5-18' WHERE `empresa`.`id` = 6
+        $db->begin_transaction(/*MYSQLI_TRANS_START_READ_ONLY*/);
+        $db->query("UPDATE `empresa` SET `nit` = '$nit', `nombre` = '$empresa',
+         `direccion` = '$direccion', `ciudad` = '$municipio', `pais` = '$departamento' 
+          WHERE `empresa`.`id` = '$id'");
         $db->commit();
-        echo " commit insert ";
+        //header("location: empresa.php");
       } catch (Exception $e) {
         echo $e;
         $db->rollback();
-        throw $e; // but the error must be handled anyway
-        
+        throw $e; 
+      
       }
     }
+    else{
+      // Crear una Nueva Empresa si Trae logo
+      if(!isset($_FILES['nuevo-logo'])){
+        //leemos almacemanos los datos en variables
+        $imagen_nombre   = $_FILES["nuevo-logo"]["name"];
+        $imagen_data     = $_FILES["nuevo-logo"]["tmp_name"];
+        $imagen_tamaño   = $_FILES["nuevo-logo"]["size"];
+        $imagen_formato  = $_FILES["nuevo-logo"]["type"];
+        // leemos la imagen y la converitmos en base64
+        $read = fopen($imagen_data, "rb");
+        $buffer = fread($read, $imagen_tamaño);
+        $toImgBase64 = base64_encode($buffer);
+        fclose($read);
+        try{
+  
+          $db->begin_transaction(/*MYSQLI_TRANS_START_READ_ONLY*/);
+          $db->query("INSERT INTO `imagen` (`logo`, `nombre`, `tamaño`, `formato`) 
+             VALUES ('$toImgBase64','$imagen_nombre','$imagen_tamaño','$imagen_formato')");
+            // recuperamos el id de la imagen insertada
+             $logo_id = $db->insert_id;
+            echo $db->insert_id;
+            // insertamos los datos de empresa en la tabla
+            
+            $db->query("INSERT INTO `empresa` 
+            VALUES ('$id', '$nit', '$empresa', '$direccion',  '$municipio',  '$departamento',  '$telefono',  '$logo_id')");
+          $db->commit();
+          echo " commit insert ";
+          header("location: empresa.php");
+        } catch (Exception $e) {
+          echo $e;
+          $db->rollback();
+          throw $e; 
+          
+        }
+      }
+      
+    }
+
+
+
+
+
   }
 }
 ?>
