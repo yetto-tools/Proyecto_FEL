@@ -15,12 +15,13 @@ const NuevoLogo = document.querySelector("#nuevo-logo");
 const VistaPrevia = document.querySelector("#img-preview");
 const Formulario = document.querySelector("#form-empresa");
 const ImgSize = document.querySelector("#img-size");
+const ImgBase64 = document.querySelector("#base64-logo");
 var test = null;
+
 // Funcion para Cargar valores Editarlos
 ListaEmpresas.addEventListener("click", (element) => {
     
     if (element.target.getAttribute("name") == 'editar'){
-        console.log("safdas")
         try {
             let empresa = element.target.parentElement.parentElement;
             IdEmpresa.value = empresa.querySelector('input[name="id"]').value;
@@ -32,6 +33,7 @@ ListaEmpresas.addEventListener("click", (element) => {
             NuevoMunicipio.value = empresa.querySelector('input[name="municipio"]').value;
             VistaPrevia.src = empresa.querySelector('img[name="logo-preview"]').src;
             ImgSize.innerHTML = 'tamaño: '+ ( (VistaPrevia.src.length   - "data:image/png;base64,".length ) /1024).toFixed(2)+' KB';
+            ImgBase64.value = VistaPrevia.src;
             ActivarBotonGuardado();
         } catch(error){
             console.log(error)
@@ -65,10 +67,14 @@ botonNuevo.addEventListener("click", (element)=>{
     if(IdEmpresa.value !== '' ){
         // limpiamos el fomulario
         Formulario.reset();
+        // reseteamos la etiqueta de tamaño
         ImgSize.innerHTML = "tamaño: 0 KB"
         VistaPrevia.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH0AAACACAQAAACMha5pAAAAlklEQVR42u3PAQ0AAAwCoNu/9Gu4CQ3IzYq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6unqXBx4gAIE1+BdCAAAAAElFTkSuQmCC";
+        ImgBase64.value = VistaPrevia.src;
     }
-    Formulario.reset()
+    Formulario.reset();
+    // volvemos a cargar imagen en blanco
+    ImgBase64.value = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH0AAACACAQAAACMha5pAAAAlklEQVR42u3PAQ0AAAwCoNu/9Gu4CQ3IzYq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6unqXBx4gAIE1+BdCAAAAAElFTkSuQmCC";
     // de lo contrario
 });
 
@@ -82,16 +88,10 @@ NuevoLogo.addEventListener("change", (element)=>{
             var fr = new FileReader();
             fr.onload = function () {
                 VistaPrevia.src = fr.result;
+                ImgBase64.value = VistaPrevia.src;
             }
             fr.readAsDataURL(files[0]);
         }
-    
-        // Not supported
-        else {
-            // fallback -- perhaps submit the input to an iframe and temporarily store
-            // them on the server until the user's session ends.
-        }
-
 });
 
 
