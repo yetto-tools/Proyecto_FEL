@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-09-2022 a las 15:18:46
+-- Tiempo de generación: 29-09-2022 a las 15:40:48
 -- Versión del servidor: 10.4.24-MariaDB
 -- Versión de PHP: 8.0.19
 
@@ -82,6 +82,13 @@ CREATE TABLE `factura` (
   `creado` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Volcado de datos para la tabla `factura`
+--
+
+INSERT INTO `factura` (`id_factura`, `nit`, `nombre`, `direccion`, `factura_uuid`, `fecha`, `descuento`, `total_factura`, `iva_factura`, `total_pagar`, `estado_id`, `cliente_id`, `actualizado`, `creado`) VALUES
+(4, 'cf', 'CF', 'ciudad', 'CE89D076-211D-4284-B0B2-A4F9F3FEF6AC', '2022-09-29', '0.00', '10.00', '1.77', '16.50', 2, 1, NULL, '2022-09-29 07:30:12');
+
 -- --------------------------------------------------------
 
 --
@@ -91,6 +98,7 @@ CREATE TABLE `factura` (
 CREATE TABLE `factura_detalle` (
   `id_detalle` int(11) NOT NULL,
   `factura_id` int(11) UNSIGNED DEFAULT NULL,
+  `factura_uuid` varchar(42) NOT NULL,
   `no_linea` int(11) UNSIGNED NOT NULL,
   `codigo` varchar(15) NOT NULL,
   `descripcion` tinytext DEFAULT NULL,
@@ -100,6 +108,13 @@ CREATE TABLE `factura_detalle` (
   `actualizado` datetime DEFAULT NULL ON UPDATE current_timestamp(),
   `creado` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `factura_detalle`
+--
+
+INSERT INTO `factura_detalle` (`id_detalle`, `factura_id`, `factura_uuid`, `no_linea`, `codigo`, `descripcion`, `cantidad`, `precio`, `monto`, `actualizado`, `creado`) VALUES
+(1, 0, 'CE89D076-211D-4284-B0B2-A4F9F3FEF6AC', 1, 'cim', 'Camiseta - Im fine', '1.00', '26.50', '26.50', NULL, '2022-09-29 07:30:12');
 
 -- --------------------------------------------------------
 
@@ -261,13 +276,13 @@ ALTER TABLE `cliente`
 -- AUTO_INCREMENT de la tabla `factura`
 --
 ALTER TABLE `factura`
-  MODIFY `id_factura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_factura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `factura_detalle`
 --
 ALTER TABLE `factura_detalle`
-  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `lista_cliente`
