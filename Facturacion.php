@@ -5,15 +5,15 @@ require_once "config.php";
 require_once "session_config.php";
 
 if($_POST){
-  $nit            = $_POST["nit"];
-  $nombre         = $_POST["nombre"];
-  $direccion      = $_POST["direccion"];
-  $numeroFactura  = $_POST["numeroFactura"];
-  $fecha          = $_POST["fecha"];
-  $total_pagar    = $_POST["totalAPagar"];
-  $descuento      = $_POST["Descuento"];
-  $iva_factura    = $_POST["IVA"];
-  $total          = $_POST["total"];
+  $nit            = trim($_POST["nit"]);
+  $nombre         = trim($_POST["nombre"]);
+  $direccion      = trim($_POST["direccion"]);
+  $numeroFactura  = trim($_POST["numeroFactura"]);
+  $fecha          = trim($_POST["fecha"]);
+  $total_pagar    = trim($_POST["totalAPagar"]);
+  $descuento      = trim($_POST["Descuento"]);
+  $iva_factura    = trim($_POST["IVA"]);
+  $total          = trim($_POST["total"]);
   $id_cliente     = $empresa["id_cliente"];
   $uuid           = $_POST["numeroFactura"];
   // Creamos un array Vacio. para guardar el detalle de la factura
