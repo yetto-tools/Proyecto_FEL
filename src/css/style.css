@@ -48,3 +48,8 @@ body{
   font-size: .875em;
   color: #196d87;
 }
+
+#numeroFactura{
+   font-size: 0.850em;
+  font-weight: bolder;
+}

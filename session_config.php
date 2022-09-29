@@ -7,10 +7,10 @@
   }
   else {
   
-    $nombre_usuario = $_SESSION["usuario"]["usuario_nombre"];
-    $login          = $_SESSION["usuario"]["correo"];
-    $role   = $_SESSION["usuario"]["role"];
-    $empresa        = $_SESSION["usuario"]["empresa"];
+    $nombre_usuario = $_SESSION["usuario"]["nombre_usuario"];
+    $login          = $_SESSION["usuario"]["usuario"];
+    $role           = $_SESSION["usuario"]["rol_id"];
+    $empresa        = $_SESSION["usuario"]["cliente"];
+    $logo_cliente   = $_SESSION["usuario"]["cliente"]["logo_cliente"];
   }
-
 ?>

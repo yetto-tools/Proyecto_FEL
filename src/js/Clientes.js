@@ -3,35 +3,33 @@ const botonAgregar = document.querySelectorAll('input[name="editar"]');
 const botonGuardar = document.querySelector("#guardar");
 const botonNuevo = document.querySelector("#nuevo");
 // variables para Elentos html 
-const ListaEmpresas = document.querySelector("#ListaEmpresas");
-const IdEmpresa = document.querySelector("#id-empresa");
+const ListaClientes = document.querySelector("#ListaClientes");
+const IdEmpresa = document.querySelector("#id-cliente");
 const NuevoNit = document.querySelector("#nuevo-nit");
-const NuevoEmpresa = document.querySelector("#nuevo-empresa");
+const NuevoEmpresa = document.querySelector("#nuevo-cliente");
 const NuevoTelefono = document.querySelector("#nuevo-telefono");
 const NuevoDireccion = document.querySelector("#nueva-direccion");
 const NuevoDepartament = document.querySelector("#nuevo-departamento");
 const NuevoMunicipio = document.querySelector("#nuevo-municipio");
 const NuevoLogo = document.querySelector("#nuevo-logo");
 const VistaPrevia = document.querySelector("#img-preview");
-const Formulario = document.querySelector("#form-empresa");
+const Formulario = document.querySelector("#form-cliente");
 const ImgSize = document.querySelector("#img-size");
 const ImgBase64 = document.querySelector("#base64-logo");
 var test = null;
 
 // Funcion para Cargar valores Editarlos
-ListaEmpresas.addEventListener("click", (element) => {
+ListaClientes.addEventListener("click", (element) => {
     
     if (element.target.getAttribute("name") == 'editar'){
         try {
-            let empresa = element.target.parentElement.parentElement;
-            IdEmpresa.value = empresa.querySelector('input[name="id"]').value;
-            NuevoNit.value = empresa.querySelector('input[name="nit"]').value;
-            NuevoEmpresa.value = empresa.querySelector('input[name="empresa"]').value;
-            NuevoDireccion.value = empresa.querySelector('textarea[name="direccion"]').value;
-            NuevoTelefono.value = empresa.querySelector('input[name="telefono"]').value;
-            NuevoDepartament.value = empresa.querySelector('input[name="departamento"]').value;
-            NuevoMunicipio.value = empresa.querySelector('input[name="municipio"]').value;
-            VistaPrevia.src = empresa.querySelector('img[name="logo-preview"]').src;
+            let cliente = element.target.parentElement.parentElement;
+            IdEmpresa.value = cliente.querySelector('input[name="id"]').value;
+            NuevoNit.value = cliente.querySelector('input[name="nit"]').value;
+            NuevoEmpresa.value = cliente.querySelector('input[name="cliente"]').value;
+            NuevoDireccion.value = cliente.querySelector('textarea[name="direccion"]').value;
+            NuevoTelefono.value = cliente.querySelector('input[name="telefono"]').value;
+            VistaPrevia.src = cliente.querySelector('img[name="logo-preview"]').src;
             ImgSize.innerHTML = 'tamaño: '+ ( (VistaPrevia.src.length   - "data:image/png;base64,".length ) /1024).toFixed(2)+' KB';
             ImgBase64.value = VistaPrevia.src;
             ActivarBotonGuardado();

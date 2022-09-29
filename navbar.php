@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="Inicio.php"><img class="img-circle rounded" src="<?php echo empty($empresa['logo']) ? "" : $empresa['logo']; ?>"  width="48" height="32" /></a>
+    <a class="navbar-brand" href="Inicio.php"><img class="img-circle rounded" src="<?php echo $logo_cliente;?>"  width="48" height="32" /></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -21,12 +21,13 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Panel de Administracion
+            Pantalla Staff
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="#">1 opcion</a></li>
-            <li><a class="dropdown-item" href="#">2 opcion</a></li>
-            <li><a class="dropdown-item" href="#">3 opcion</a></li>
+          <li><a class="dropdown-item" href="Staff.php">Roles de Staff</a></li>  
+          <li><a class="dropdown-item" href="Clientes.php">Clientes</a></li>
+          <li><a class="dropdown-item" href="Estatus.php">Estatus</a></li>
+            
           </ul>
         </li>
         <li class="nav-item dropdown">

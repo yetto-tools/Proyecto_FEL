@@ -15,7 +15,7 @@ $_SERVER['error'] = "";
 
 
 // Definir variables e inicializar con valores vacíos
-$correo = ""; 
+$usuario = ""; 
 $email_err = "";
 $password_err = "";
 $login_err = "";
@@ -28,7 +28,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   if(empty(trim($_POST["login"]))){
       $email_err = "Por favor, introduzca el nombre de usuario.";
   } else{
-      $correo = trim($_POST["login"]);
+      $usuario = trim($_POST["login"]);
   }
   
   // Comprueba si la contraseña está vacía
@@ -41,81 +41,84 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   // Validar las credenciales
   if(empty($email_err) && empty($password_err)){
       // Preparar una sentencia select
-    $sql = "SELECT
-u.id,
-u.correo,
-u.password,
-r.role,
-s.nombre,
-e.nit,
-e.nombre,
-e.direccion,
-e.ciudad,
-e.pais,
-e.telefono,
-i.logo,
-i.formato,
-o.omiso,
-o.factura_id
-FROM usuario u
-LEFT JOIN staff s ON u.id = s.usuario_id
-LEFT JOIN role r ON r.id = u.role_id
-LEFT JOIN empresa e ON e.id = s.empresa_id
-LEFT JOIN imagen i ON i.id  = e.logo_id
-LEFT JOIN omiso o ON o.empresa_id = s.empresa_id 
-WHERE u.correo =?";
+    
+    $sql = "
+      SELECT 
+      u.id_usuario,
+      u.nombre_usuario, 
+      u.usuario, 
+      u.contraseña, 
+      u.es_staff, 
+      u.cliente_id, 
+      u.rol_id, 
+      u.verificado, 
+      c.id_cliente, 
+      c.nit_cliente, 
+      c.nombre_cliente, 
+      c.direccion_cliente, 
+      c.telefono_cliente, 
+      c.logo_cliente, 
+      c.verificado 
+      FROM usuario u LEFT JOIN cliente c ON u.cliente_id = id_cliente where usuario = ?;
+    ";
 
     if($stmt = $db->prepare($sql)){
-      $stmt->bind_param("s", $correo);
+      $stmt->bind_param("s", $usuario);
       
       $stmt->execute();
       $stmt->store_result();
       if ($stmt->num_rows == 1){
 
         $stmt->bind_result(
-          $id,
-          $correo,
-          $hashed_password,
-          $role,
-          $usuario_nombre, 
-          $empresa_nit, 
-          $empresa_nombre,
-          $empresa_direccion,
-          $empresa_ciudad,
-          $empresa_pais,
-          $empresa_telefono,
-          $imagen_logo,
-          $imagen_formato,
-          $omiso,
-          $factura_omiso
+          $id_usuario, 
+          $nombre_usuario,
+          $usuario, 
+          $contraseña, 
+          $es_staff, 
+          $cliente_id, 
+          $rol_id, 
+          $verificado, 
+          $id_cliente, 
+          $nit_cliente, 
+          $nombre_cliente, 
+          $direccion_cliente, 
+          $telefono_cliente, 
+          $logo_cliente, 
+          $verificado 
         );
         $stmt->fetch();
         // verificamos password
-        if(password_verify($password, $hashed_password)){
-          session_start();
-          $_SESSION['usuario'] = array(
-          "id"=>$id,
-          "correo"=>$correo,
-          "role"=>$role,
-          "usuario_nombre"=>$usuario_nombre, 
-          "empresa" =>
-            array(
-              "nit"=>$empresa_nit, 
-              "nombre"=>$empresa_nombre,
-              "direccion"=>$empresa_direccion,
-              "ciudad"=>$empresa_ciudad,
-              "pais"=>$empresa_pais,
-              "telefono"=>$empresa_telefono,
-              "logo" => "data:".$imagen_formato.";base64,".$imagen_logo 
-            ),
-          "omiso"=>$omiso,
-          "factura_omiso"=>$factura_omiso  
-          );
-           //= $informacion_usuario;
-          // var_dump($_SESSION['usuario']);
-          // Redirigir al usuario a la página de bienvenida
-          header("location: inicio.php");
-        }else{
+        if(password_verify($password, $contraseña)){
+                      
+            (session_status() == PHP_SESSION_ACTIVE) ? session_reset() : session_start();
+            //session_start();
+            $_SESSION['usuario'] = array(
+            "id_usuario" =>  $id_usuario,
+            "nombre_usuario" => $nombre_usuario,
+            "usuario" =>  $usuario, 
+            "es_staff" =>  $es_staff, 
+            "cliente_id" =>  $cliente_id, 
+            "rol_id" =>  $rol_id,
+            "cliente" =>
+              array(
+              "id_cliente" =>  $id_cliente, 
+              "nombre_cliente" =>  $nombre_cliente,
+              "nit_cliente" =>  $nit_cliente, 
+              "direccion_cliente" =>  $direccion_cliente, 
+              "telefono_cliente" =>  $telefono_cliente, 
+              "logo_cliente" =>  $logo_cliente, 
+              "verificado" =>  $verificado 
+              )
+            );
+            // filtrado de  cuenta activa
+            if ($_SESSION['usuario']['cliente']['verificado'] == false){
+              $login_err  =  "Usuario o Emprea No ha sido Verificado por el Staff";
+            }
+            else{
+                header("location: index.html");
+            }
+        }
+        else{
           $login_err = $password_err =  "Error de Contraseña";  
         }
       }
@@ -126,11 +129,10 @@ WHERE u.correo =?";
       $stmt->close();
     }
     else{
-
+      $error_log =  "Problema Con la Consulta a la Base de Datos";
     }
 
   }
-  
   // Close connection
   mysqli_close($db);
 }
@@ -152,18 +154,24 @@ WHERE u.correo =?";
             <h2 class="display-4 text-center">LOGIN</h2>
             <div class="text-center"><small class="text-muted">Por favor complete este formulario para ingresar a su cuenta.</small></div>
             <div class="row">
-              <?php 
-                if(!empty($_SERVER['error'])){
-                  echo '<div class="alert alert-danger mt-5">' . $_SERVER['error']    . '</div>'; 
-                }
-                if(!empty($login_err)){
-                  echo '<div class="alert alert-danger mt-5">' . $login_err . '</div>'; 
-                }        
-              ?>
+              <div class="justify-content-center align-items-center">
+                <?php 
+                  if(!empty($_SERVER['error'])){
+                    echo '<div class="mt-2 alert alert-danger alert-dismissible" role="alert">'.
+                    $_SERVER['error']
+                    . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> </div>';
+                  }
+                  if(!empty($login_err)){
+                    echo '<div class="alert alert-danger alert-dismissible" role="alert">'.
+                    $login_err
+                    . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> </div>';
+                  }        
+                ?>
+              <div>
               <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" >
-                <div class="form-group mt-4">
+                <div class="form-group mt-2">
                   <label><strong>Nombre de Usuario</strong></label>
-                  <input type="text" name="login" class="form-control <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $correo; ?>">
+                  <input type="text" name="login" class="form-control <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $usuario; ?>">
                   <span class="invalid-feedback"><?php echo $email_err; ?></span>
                 </div>
                 <div class="form-group mt-4">
@@ -175,7 +183,7 @@ WHERE u.correo =?";
                   <input type="submit" class="btn btn-lg btn-block btn-primary" value="Ingresar">
                 </div>
                 <div class="form-group mt-4 text-center">
-                  <p>¿No tienes una cuenta? <a href="registro.php">Regístrate ahora</a>.</p>
+                  <p>¿No tienes una cuenta? <a class="btn btn-sm btn-primary" href="Nuevo Cliente.php">Regístrate ahora</a>.</p>
                 </div>
               </form>
             </div>

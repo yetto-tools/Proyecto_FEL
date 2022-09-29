@@ -20,8 +20,8 @@ SET time_zone = "+06:00";
 --
 -- Base de datos: `proyect_fel`
 --
-CREATE DATABASE IF NOT EXISTS `proyect_fel` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `proyect_fel`;
+CREATE DATABASE IF NOT EXISTS `proyecto_fel` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `proyecto_fel`;
 
 -- --------------------------------------------------------
 
@@ -34,8 +34,8 @@ CREATE TABLE `cliente` (
   `nit_cliente` varchar(15) NOT NULL,
   `nombre_cliente` varchar(150) NOT NULL,
   `direccion` varchar(150) NOT NULL,
-  `ciudad` varchar(150) NOT NULL,
-  `pais` varchar(90) NOT NULL,
+  `departamento` varchar(90) NOT NULL,
+  `municipio` varchar(150) NOT NULL,
   `telefono` varchar(15) NOT NULL,
   `verificado` tinyint(1) NOT NULL DEFAULT 0,
   `omisos` int(11) UNSIGNED DEFAULT 0,
@@ -53,10 +53,10 @@ CREATE TABLE `empresa` (
   `id` int(11) UNSIGNED NOT NULL,
   `nit` varchar(15) NOT NULL,
   `nombre` varchar(15) NOT NULL,
-  `direccion` varchar(150) NOT NULL,
-  `ciudad` varchar(150) NOT NULL,
-  `pais` varchar(90) NOT NULL,
-  `telefono` varchar(15) NOT NULL,
+  `direccion` varchar(150) NOT NULL DEFAULT "Ciudad",
+  `departamento` varchar(90) NULL DEFAULT "Guatemala",
+  `municipio` varchar(150) NULL DEFAULT "Guatemala",
+  `telefono` varchar(15) NULL,
   `logo_id` int(11) UNSIGNED DEFAULT NULL,
   `actualizado` datetime DEFAULT NULL ON UPDATE current_timestamp(),
   `creado` datetime NOT NULL DEFAULT current_timestamp()
@@ -92,7 +92,7 @@ CREATE TABLE `factura` (
 
 CREATE TABLE `imagen` (
   `id` int(11) UNSIGNED NOT NULL,
-  `logo` longblob NOT NULL,
+  `logo` longblob NULL,
   `nombre` varchar(50) NOT NULL,
   `tamaño` varchar(20) NOT NULL,
   `formato` varchar(20) NOT NULL,
@@ -409,8 +409,8 @@ CREATE TABLE `empresa` (
   `nit` varchar(15) NOT NULL,
   `nombre` varchar(15) NOT NULL,
   `direccion` varchar(150) NOT NULL,
-  `ciudad` varchar(150) NOT NULL,
-  `pais` varchar(90) NOT NULL,
+  `departamento` varchar(90) NOT NULL,
+  `municipio` varchar(150) NOT NULL,
   `telefono` varchar(15) NOT NULL,
   `logo_id` int(11) UNSIGNED DEFAULT NULL,
   `actualizado` datetime DEFAULT NULL ON UPDATE current_timestamp(),
@@ -421,7 +421,7 @@ CREATE TABLE `empresa` (
 -- Volcado de datos para la tabla `empresa`
 --
 
-INSERT INTO `empresa` (`id`, `nit`, `nombre`, `direccion`, `ciudad`, `pais`, `telefono`, `logo_id`, `actualizado`, `creado`) VALUES
+INSERT INTO `empresa` (`id`, `nit`, `nombre`, `direccion`, `municipio`, `departamento`, `telefono`, `logo_id`, `actualizado`, `creado`) VALUES
 (1, '9876543-7', 'DigitSAT', '9 Avenida 9-89, Zona 9', 'Guatemala', 'Guatemala', '+502 2523-6997', 1, '2022-09-24 08:35:35', '2022-09-24 07:25:17');
 
 -- --------------------------------------------------------
