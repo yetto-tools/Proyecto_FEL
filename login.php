@@ -68,7 +68,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       $stmt->execute();
       $stmt->store_result();
       if ($stmt->num_rows == 1){
-
         $stmt->bind_result(
           $id_usuario, 
           $nombre_usuario,

@@ -31,61 +31,64 @@ if($_POST){
     );
 
   }
-  
+
+  $numero = 0;
   // if(empty($errores)){
     try{
       $db->begin_transaction();
+        $db->autocommit(false);
         $sql_factura = "INSERT INTO `factura`
-        (`nit`, `nombre`, `direccion`, `factura_uuid`, `fecha`, `descuento`, `total_factura`, `iva_factura`, `total_pagar`, `cliente_id` )
-        VALUES (
-          '$nit',
-          '$nombre',
-          '$direccion',
-          '$uuid',
-          '$fecha',
-          '$total_pagar',
-          '$descuento',
-          '$iva_factura',
-          '$total',
-          '$id_cliente'
-        );";
-        var_dump($sql_factura);
-        $db->query($sql_factura);
-        
-        $correlativo = $db->insert_id;
-        $sql_detalle = "";
+        ( `nit`,`nombre`,`direccion`,`factura_uuid`,`fecha`,`descuento`,`total_factura`,`iva_factura`, `total_pagar`,`cliente_id` )
+        VALUES (?,?,?,?,?,?,?,?,?,?);";
+
+        $stmt = $db->prepare($sql_factura);
+        $stmt->bind_param("sssssddddi", $nit, $nombre, $direccion, $uuid, $fecha, $descuento, $total, $iva_factura, $total_pagar, $id_cliente);
+        $stmt->execute();        
+        $numero = $db->insert_id;
+        $stmt->close();
         $uuid ="";
-        var_dump($correlativo);
-        if ($correlativo !== 0){
+        
+        $sql = "select factura_uuid from factura WHERE id_factura = ?";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("i",$numero);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($uuid);
+        $stmt->fetch();
+        $stmt->close();
+
+        if ($numero != 0 ){
           $contardor_linea = 0;
-          $result = $db->query("select  factura_uuid   from factura WHERE id_factura ='$correlativo'");
-          $uuid =  $result->fetch_assoc()['factura_uuid'];
+          $sql = "INSERT INTO `factura_detalle`
+          ( `factura_id`, `factura_uuid`, `no_linea`, `codigo`, `descripcion`, `cantidad`, `precio`, `monto` )
+          VALUES (?,?,?,?,?,?,?,?);";
+
+          $stmt = $db->prepare($sql);
           foreach ($detalleFactura as $linea) {
             $contardor_linea++;
-            $sql_detalle .= "INSERT INTO `factura_detalle` ( `factura_id`, `factura_uuid`, `no_linea`, `codigo`, `descripcion`, `cantidad`, `precio`, `monto` )
-            VALUES (
-            '{$factura_id}',
-            '{$uuid}',
-            '$contardor_linea',
-            '{$linea['producto']}',
-            '{$linea['descripcion']}',
-            '{$linea['cantidad']}',
-            '{$linea['precio']}',
-            '{$linea['monto']}');";
+            $stmt->bind_param("isissddd", 
+              $numero,
+              $uuid,
+              $contardor_linea,
+              $linea['producto'],
+              $linea['descripcion'],
+              $linea['cantidad'],
+              $linea['precio'],
+              $linea['monto']
+            );
+            $stmt->execute();
           }
-          $db->query($sql_detalle);
-        }
-        else if($factura_id == 0){
-          $db->rollback();
-          throw new Exception("Ocurrio un Problema durante el Registro!!");
-        }
-        
-        var_dump($sql_detalle);
 
-        $db->commit();
+        }  
+      $db->commit();
+
+      // Generar PDF Factura;
+      file_get_contents('pdf.php?facturaPDF=$numero');
+
+      header("Location: Facturacion.php");
       $mensaje = '<div class="alert alert-info alert-dismissible" role="alert">'
-      ."<b> NIT: ".$nit." <b>"
-      ."</b></p><p class='fw-bold'>Espere a que el Staff Verifique la informacion</p>"
+      ."<b> Nombre: ".$nombre." <b>"."<b> Nombre: ".$nit." <b>"
+      ."</b></p><p class='fw-bold'>". $numeroFactura."</p>"
       . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
     }
     catch (Exception $e) {
@@ -93,7 +96,6 @@ if($_POST){
       $mensaje = '<div class="alert alert-danger alert-dismissible" role="alert">'.
       $e->getMessage()
       . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> </div>';
-
     } // FIN CATCH
 }
 
@@ -162,7 +164,8 @@ if($_POST){
               <div class="col col-md-6">
                 <div class="row">
                   <label class="col-md-4 col-form-label bg-light"><strong>Factura N°</strong></label>
-                  <div class="col col-lg-7"><input type="text" id="numeroFactura" name="numeroFactura" class="form-control form-control-sm mb-4 bg-ligh fs-bold" placeholder="N° Factura" readonly></div>
+                  <div class="col col-lg-7"><input type="text" id="uuidFactura" name="numeroFactura" class="form-control form-control-sm mb-4 bg-ligh fs-bold" placeholder="N° Factura" readonly></div>
+                  <div class="col col-lg-7"><input type="hidden" id="numeroFactura" name="numeroFactura" class="form-control form-control-sm mb-4 bg-ligh fs-bold" placeholder="N° Factura" readonly></div>
                 </div>
                 <div class="row">
                   <label class="col-md-4 col-form-label bg-light"><strong>Fecha:</strong></label>
@@ -230,7 +233,7 @@ if($_POST){
                         <div class="col col-md-5 ms-3 mt-2"><input type="number" id="total" name="total" min="0.1" value="0.00" step="any" class="form-control form-control-sm text-muted fw-bold bg-light" readonly required></div>
                       </div>
                       <div class="row d-flex justify-content-center">
-                        <div class="col col-md-9 mt-2 text-center d-grid gap-2 "><input type="submit" class="btn btn-sm btn-success" value="Firmar" /></div>
+                        <div class="col col-md-9 mt-2 text-center d-grid gap-2 "><input type="submit" id="Firmar" class="btn btn-sm btn-success" value="Firmar" /></div>
                       </div>
                     </div>
                 </div>

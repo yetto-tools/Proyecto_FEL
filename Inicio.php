@@ -55,28 +55,29 @@ if($_POST){
                     <th scope="col" hidden></th>
                     <th scope="col">NIT</th>
                     <th scope="col">Cliente</th>
-                    <th scope="col">Direccion</th>
+                    <th scope="col" hidden>Direccion</th>
                     <th scope="col">Fecha</th>
                     <th scope="col">uuid</th>
                     <th scope="col" >Total</th>
-                    <th scope="col"></th>
+                    <th scope="col">Estado</th>
                     <th scope="col"></th>
                   </tr>
                 </thead>
                 <tbody id="ListaClientes" class="fixed_header">
                   <?php if ($factura= ListaFacturacion($db,$sql)): ?>
-                    <?php foreach($factura as $infoCliente): ?>
+                    <?php foreach($factura as $linea): ?>
                       <tr id="<?= $count+=1; ?>" name="linea">
                         <th scope="row" name="numero"><?= $count; ?></th>
-                        <td hidden><input type="number" id="id" name="id" class="" value="<?= $infoCliente['id_factura']; ?>" required readonly></td>
-                        <td><input type="text" name="nit" class="form-control form-control-sm" value="<?= $infoCliente['nit']; ?>" disabled readonly required></td>
-                        <td><input type="text" name="cliente" class="form-control form-control-sm" value="<?= $infoCliente['nombre']; ?>" disabled readonly required></td>
-                        <td><input type="text" name="fecha" class="form-control form-control-sm" value="<?= $infoCliente['direccion']; ?>"  disabled readonly required></td>
-                        <td><input type="text" name="fecha" class="form-control form-control-sm" value="<?= $infoCliente['fecha']; ?>"  disabled readonly required></td>
+                        <td hidden><input type="number" id="id" name="id" class="" value="<?= $linea['id_factura']; ?>" required readonly></td>
+                        <td><input type="text" name="nit" class="form-control form-control-sm" value="<?= $linea['nit']; ?>" disabled readonly required></td>
+                        <td><input type="text" name="cliente" class="form-control form-control-sm" value="<?= $linea['nombre']; ?>" disabled readonly required></td>
+                        <td hidden><input type="text" name="direccion" class="form-control form-control-sm" value="<?= $linea['direccion']; ?>"  disabled readonly required></td>
+                        <td><input type="text" name="fecha" class="form-control form-control-sm" value="<?= $linea['fecha']; ?>"  disabled readonly required></td>
 
-                        <td><textarea name="uuid"  rows="1" cols="90" class="form-control form-control-sm" value="<?= $infoCliente['factura_uuid']; ?>"disabled readonly required><?= $infoCliente['factura_uuid']; ?></textarea></td>
-                        <td><input type="text" name="total" class="form-control form-control-sm" value="<?= $infoCliente['total_pagar']; ?>" disabled readonly required></td>
-                        <th class="text-center"><input type="button" name="editar" class="btn btn-sm btn-warning" value="&#9998;" tokenID="<?= $infoCliente['id_factura'] ?>"/></th>
+                        <td><textarea name="uuid"  rows="1" cols="90" class="form-control form-control-sm" value="<?= $linea['factura_uuid']; ?>"disabled readonly required><?= $linea['factura_uuid']; ?></textarea></td>
+                        <td><input type="text" name="total" class="form-control form-control-sm" value="<?= $linea['total_factura']; ?>" disabled readonly required></td>
+                        <td><input type="text" name="estado" class="form-control form-control-sm fw-bold <?= $linea['estado_id']=2 ? 'bg-danger': 'bg-green' ?> " value="<?= $linea['estado_id']=2 ? 'Con Omiso': 'Sin Omiso' ?> " disabled readonly required></td>
+                        <th class="text-center"><input type="button" name="editar" class="btn btn-sm btn-warning" value="&#9998;" tokenID="<?= $linea['id_factura'] ?>"/></th>
                       </tr>
                     <?php endforeach ?>
                     </tr>

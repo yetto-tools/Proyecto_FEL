@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="refresh" content="0;url=http://localhost:8080/Proyecto_FEL/inicio.php" />
+    <meta http-equiv="refresh" content="" />
     <title></title>
   </head>
  <body></body>
+ <script>
+  
+  let url = "0;url="+document.location['origin'] +"/Proyecto_FEL/inicio.php"
+  document.querySelector("head > meta").setAttribute("content", url );
+
+   console.log(url)
+
+ </script>
 </html>

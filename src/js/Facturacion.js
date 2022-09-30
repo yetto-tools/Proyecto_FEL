@@ -1,4 +1,5 @@
 
+const botonFirmar = document.querySelector("#Firmar");
 const botonBuscar = document.querySelector("#buscar");
 const botonAgregar = document.querySelector('#agregar');
 const ListaProductos = document.querySelector('#ListaProductos');
@@ -33,7 +34,7 @@ botonBuscar.addEventListener('click', (e)=>{
 		  .then(data => {
 			if(data != null){
 				inputNombreFactura.value = data['lista_cliente_nit']
-				inputDireccionFactura.value = data['lista_cliente_nit']
+				inputDireccionFactura.value = data['lista_cliente_direccion']
 			}else{
 				alert("NO existe el NIT del Cliente");
 			}
@@ -241,3 +242,16 @@ const uuidv4 =() => {
 	  (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16).toUpperCase()
 	);
 }
+
+// botonFirmar.addEventListener('submit', (event) => {
+// 	let url = document.location['origin']+
+// 	'/Proyecto_FEL/pdf.php?facturaPDF='+'';
+
+// 	fetch(url)
+// 	.then(response => response.json())
+// 	.then(data => {
+		
+// 	})
+// 	.catch(console.log(erro));
+
+// });
