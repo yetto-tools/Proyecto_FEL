@@ -281,19 +281,23 @@ if(!empty($_GET['Reporte-Estatus'])){
     // Contriumos el reporte
     function ReporteGeneralPDF($id_cliente, $db){
         $sql = "SELECT
-        C.id_cliente AS ID,
-        C.nit_cliente AS NIT,
-        C.nombre_cliente AS NOMBRE,
-        C.direccion_cliente AS DIRECCION,
-        C.telefono_cliente AS TELEFONO,
-        C.logo_cliente AS LOGO,
-        sum(distinct F.iva_factura) as IVA,
-        sum(distinct F.total_factura) as TOTAL_FACTURADO,
-        NOW() as 'FECHA_GENERADO'
-        FROM factura F 
-        LEFT JOIN cliente C ON F.cliente_id = C.id_cliente
-        WHERE C.id_cliente = ?
-        group by id_cliente;";  
+        C.id_cliente,
+        C.nit_cliente,
+        C.nombre_cliente,
+        C.direccion_cliente,
+        C.telefono_cliente,
+        C.verificado,
+        C.creado,
+        C.actualizado,
+        IF(F.estado_id != NULL, "OMISO", "SIN OMISO" ) AS omiso,
+        F.estado_id,
+        F.id_factura,
+        F.nit
+        FROM cliente C 
+            LEFT JOIN factura F ON F.cliente_id = C.id_cliente
+        GROUP BY id_cliente
+        ORDER BY C.nombre_cliente DESC        
+        ";  
         // Listar Empresas
         $stmt = $db->prepare($sql);
         $stmt->bind_param("s",$id_cliente);
