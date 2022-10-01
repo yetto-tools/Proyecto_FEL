@@ -19,11 +19,8 @@ if (!empty($_GET['producto'])){
   $codigo = $_GET['producto'];
   function buscarProducto($db, $codigo){
     $sql = "SELECT * FROM `producto` WHERE codigo = '$codigo';";  
-    
     $result = $db->query($sql);
-
     $producto = $result->fetch_assoc();
-    
     return $producto;
   }
   // retorna json con datos producto
@@ -31,6 +28,24 @@ if (!empty($_GET['producto'])){
   echo json_encode( $data = buscarProducto($db, $codigo));
  
 }
+
+// Funcion Elimiar Producto
+if($_SERVER['REQUEST_METHOD'] === 'DELETE'){
+  parse_str(file_get_contents('php://input'),$_DELETE);
+  $value = $_DELETE["id-producto"];
+  $response = array("resultado"=> $value);
+  $stmt = $db->prepare("DELETE FROM producto WHERE id_producto = ?;");
+  $stmt->bind_param("i", $value);
+  $stmt->execute();
+  $stmt->close();
+  header('Content-type: application/json');
+  echo json_encode();
+  
+}
+
+
+
+
 
 // if (!empty($_GET['producto'])){
 //   $codigo_producto = $_GET['cliente'];

@@ -30,45 +30,7 @@ if($_POST){
   $nombre     = trim($_POST["lista_cliente_nombre"]);
   $direcion   = trim($_POST["lista_cliente_direccion"]);
   $cliente_id = $empresa["id_cliente"];
-  // if($id){
-  //   // comprobamos que los cambos Obligatorios no esten vacios
-  //   try{  
-  //     $db->begin_transaction(/*MYSQLI_TRANS_START_READ_ONLY*/);
-  //     $query_actualizar = "UPDATE `producto` SET `codigo` = '$codigo', `descripcion` = '{$descripcion}', `precio` = '$precio', `imagen` = '$imagen' WHERE `id_producto` = '$id' ";
-  //     $db->query($query_actualizar);
-  //     $db->commit();
-  //     $mensaje = '<div class="alert alert-info alert-dismissible" role="alert">'.
-  //     "Registro Actualizado Correctamente"
-  //     . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> </div>';
-  //   } 
-  //   catch (Exception $e) {
-  //     $mensaje = '<div class="alert alert-danger alert-dismissible" role="alert">'.
-  //     $e->getMessage()
-  //     . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> </div>';
-  //     $db->rollback();
-  //   } // FIN CATCH
-  // }
-// //     // Si no hay ID crear nuevo datos
-//   else{
-//     try{
-//       $db->begin_transaction(/*MYSQLI_TRANS_START_READ_ONLY*/);
-//       $query_insertar = "INSERT INTO `producto` 
-//              (`codigo`, `descripcion`, `precio`,  `imagen`, `cliente_id`)  
-//       VALUES ('$codigo', '$descripcion', '$precio', '$imagen',  '$cliente_id');";
-//       $mensaje = '<div class="alert alert-success" role="alert">'.$query_insertar.'</div>';
-//       $db->query($query_insertar);
-//       $db->commit();
-//       $mensaje = '<div class="alert alert-success alert-dismissible" role="alert">'.
-//       "Registro Creado Correctamente"
-//       . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> </div>';
-//     }
-//     catch (Exception $e) {
-//       $mensaje = '<div class="alert alert-danger alert-dismissible" role="alert">'.
-//       $e->getMessage()
-//       . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> </div>';
-//       $db->rollback();
-//     } // FIN CATCH
-//   } // FIN ELSE NUEVO REGISTRO
+
 
 }
 
@@ -85,7 +47,7 @@ if($_POST){
     <div class="container-fluid">
       <div class="row mt-5 d-flex justify-content-center">
         <div class="col col-md-9">
-          <h4 class="bg-success text-white text-center mb-0 py-0"><div class="mb-0"><span class="mx-2">Crear Productos</span></div></h4>
+          <h4 class="bg-warning text-white text-center mb-0 py-0"><div class="mb-0"><span class="mx-2">Crear Cliente</span></div></h4>
           <div class="shadow-lg p-4 mb-5 bg-white rounded">
             <form  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data" id="form-producto" class="needs-validation" novalidate>
             <div class="row mb-2">
@@ -110,7 +72,7 @@ if($_POST){
                         <button id="guardar" class="btn btn-sm btn-outline-secondary" role="button" disabled>Guardar Cambios &check;</button>
                       </div>
                       <div class="col col-md-1 text-end">
-                        <button id="guardar" class="btn btn-sm btn-outline-secondary" role="button" disabled>&cross;</button>
+                        <button id="elilminar" type="button" class="btn btn-sm btn-outline-secondary" role="button" disabled>&cross;</button>
                       </div>
                     </div>
                   </div>
@@ -230,7 +192,7 @@ if($_POST){
                     <?php endforeach ?>
                     </tr>
                   <?php else: ?>
-                    <strong>No data found</strong>
+                    <strong>No hay Informacion Disponible</strong>
                   <?php endif ?>
                 </tbody>
               </table>

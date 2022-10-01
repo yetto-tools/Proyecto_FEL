@@ -3,6 +3,8 @@
 session_start();
 require_once "config.php";
 require_once "session_config.php";
+require_once "pdf.php";
+
 
 if($_POST){
   $nit            = trim($_POST["nit"]);
@@ -83,7 +85,7 @@ if($_POST){
       $db->commit();
 
       // Generar PDF Factura;
-      file_get_contents('pdf.php?facturaPDF=$numero');
+      CrearFacturaPDF($numero, $db);
 
       header("Location: Facturacion.php");
       $mensaje = '<div class="alert alert-info alert-dismissible" role="alert">'

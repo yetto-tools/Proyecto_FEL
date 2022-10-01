@@ -98,6 +98,7 @@ if($_POST){
   <?php include("link.php")?>
 </head>
 <body>
+  <?php echo session_status(); ?>
   <div class="container-fluid">
     <div class="row mt-5 d-flex justify-content-center">
       <div class="col col-md-9">
@@ -225,7 +226,7 @@ if($_POST){
                       <div class="row mb-3">
                         <div class="col pe-0">
                           <input type="file" id="nuevo-logo" name="nuevo-logo"  accept="image/png, image/gif, image/jpeg" class="form-control form-control-sm mb-2">
-                          <input type="text" id="base64-logo" name="base64-logo" value="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH0AAACACAQAAACMha5pAAAAlklEQVR42u3PAQ0AAAwCoNu/9Gu4CQ3IzYq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6unqXBx4gAIE1+BdCAAAAAElFTkSuQmCC">
+                          <input type="hidden" id="base64-logo" name="base64-logo" value="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH0AAACACAQAAACMha5pAAAAlklEQVR42u3PAQ0AAAwCoNu/9Gu4CQ3IzYq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6unqXBx4gAIE1+BdCAAAAAElFTkSuQmCC">
                           <div class="valid-feedback">listo!</div>
                           <div class="invalid-feedback">Campo Obligatorio!!</div>
                           <div class="text-small"><span id="img-size" class="small">tamaño: 0 KB</span></div>
@@ -250,6 +251,11 @@ if($_POST){
                   <div class="col-auto">
                     <button type="submit" class="btn btn-primary btn-lg">Registrar</button>
                   </div>
+
+                  <div class="col-auto ms-5">
+                    <a href="inicio.php" class="btn btn-primary btn-lg" >Inicio</a>
+                  </div>
+
                 </div>
               </div>
             </form>

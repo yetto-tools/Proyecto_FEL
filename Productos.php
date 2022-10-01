@@ -68,6 +68,19 @@ if($_POST){
   } // FIN ELSE NUEVO REGISTRO
 }
 
+// Funcion Elimiar Producto
+if($_SERVER['REQUEST_METHOD'] === 'DELETE'){
+  parse_str(file_get_contents('php://input'),$_DELETE);
+  $value = $_DELETE["id-producto"];
+  $response = array("resultado"=> $value);
+  $stmt = $db->prepare("DELETE FROM producto WHERE id_producto = ?;");
+  $stmt->bind_param("i", $value);
+  $stmt->execute();
+  $stmt->close();
+  header('Content-type: application/json');
+  http_response_code(202);
+  
+}
 
 ?>
 
@@ -106,7 +119,7 @@ if($_POST){
                         <button id="guardar" class="btn btn-sm btn-outline-secondary" role="button" disabled>Guardar Cambios &check;</button>
                       </div>
                       <div class="col col-md-1 text-end">
-                        <button id="guardar" class="btn btn-sm btn-outline-secondary" role="button" disabled>&cross;</button>
+                        <button id="eliminar" type="button" class="btn btn-sm btn-outline-secondary" role="button" disabled>&cross;</button>
                       </div>
                     </div>
                   </div>
@@ -229,7 +242,7 @@ if($_POST){
                     <?php endforeach ?>
                     </tr>
                   <?php else: ?>
-                    <strong>No data found</strong>
+                    <strong>No hay Informacion Disponible</strong>
                   <?php endif ?>
                 </tbody>
               </table>

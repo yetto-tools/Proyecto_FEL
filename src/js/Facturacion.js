@@ -28,7 +28,7 @@ botonBuscar.addEventListener('click', (e)=>{
 	if(inputNITFactura.value !==""){
 		let url = document.location['origin']+
 		'/Proyecto_FEL/ajax.php?cliente='+inputNITFactura.value;
-		console.log(url);
+
 		fetch(url)
 		  .then(response => response.json())
 		  .then(data => {

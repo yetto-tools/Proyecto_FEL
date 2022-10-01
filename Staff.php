@@ -226,7 +226,7 @@ if($_POST){
                                 <option value="<?=$info['id_cliente']?>"><?=$info['nombre_cliente']." - ".$info['nit_cliente']?></option>
                               <?php endforeach ?>
                             <?php else: ?>
-                              <strong>No data found</strong>
+                              <strong>No hay Informacion Disponible</strong>
                             <?php endif ?>
                           </select>
                         <div class="valid-feedback">listo!</div>
@@ -249,7 +249,7 @@ if($_POST){
                                   </option>
                                 <?php endforeach ?>
                               <?php else: ?>
-                                <strong>No data found</strong>
+                                <strong>No hay Informacion Disponible</strong>
                               <?php endif ?>
                           </select>
                         <div class="valid-feedback">listo!</div>
@@ -325,7 +325,7 @@ if($_POST){
                     <?php endforeach ?>
                     </tr>
                   <?php else: ?>
-                    <strong>No data found</strong>
+                    <strong>No hay Informacion Disponible</strong>
                   <?php endif ?>
                 </tbody>
               </table>

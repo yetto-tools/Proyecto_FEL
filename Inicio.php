@@ -44,48 +44,14 @@ if($_POST){
     <div class="container-fluid">
       <div class="row mt-5 d-flex justify-content-center">
         <div class="col col-md-9">
-          <h4 class="bg-info text-white text-center mb-0 py-0"><div class="mb-0"><span class="mx-2">Omisos</span></div></h4>
-          <div class="shadow-lg p-4 mb-5 bg-white rounded"></div>
-          <div class="row justify-content-center">
-            <div class="col col-md-auto">
-              <table class="table table-borderless table-sm table-striped table-hover table-wrapper border">
-                <thead class="table-dark text-center sticky-top" id="header-clientes">
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col" hidden></th>
-                    <th scope="col">NIT</th>
-                    <th scope="col">Cliente</th>
-                    <th scope="col" hidden>Direccion</th>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">uuid</th>
-                    <th scope="col" >Total</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col"></th>
-                  </tr>
-                </thead>
-                <tbody id="ListaClientes" class="fixed_header">
-                  <?php if ($factura= ListaFacturacion($db,$sql)): ?>
-                    <?php foreach($factura as $linea): ?>
-                      <tr id="<?= $count+=1; ?>" name="linea">
-                        <th scope="row" name="numero"><?= $count; ?></th>
-                        <td hidden><input type="number" id="id" name="id" class="" value="<?= $linea['id_factura']; ?>" required readonly></td>
-                        <td><input type="text" name="nit" class="form-control form-control-sm" value="<?= $linea['nit']; ?>" disabled readonly required></td>
-                        <td><input type="text" name="cliente" class="form-control form-control-sm" value="<?= $linea['nombre']; ?>" disabled readonly required></td>
-                        <td hidden><input type="text" name="direccion" class="form-control form-control-sm" value="<?= $linea['direccion']; ?>"  disabled readonly required></td>
-                        <td><input type="text" name="fecha" class="form-control form-control-sm" value="<?= $linea['fecha']; ?>"  disabled readonly required></td>
+        
+          <div class="shadow-lg p-4 mb-5 bg-white rounded">
+            <div class="row justify-content-center">
 
-                        <td><textarea name="uuid"  rows="1" cols="90" class="form-control form-control-sm" value="<?= $linea['factura_uuid']; ?>"disabled readonly required><?= $linea['factura_uuid']; ?></textarea></td>
-                        <td><input type="text" name="total" class="form-control form-control-sm" value="<?= $linea['total_factura']; ?>" disabled readonly required></td>
-                        <td><input type="text" name="estado" class="form-control form-control-sm fw-bold <?= $linea['estado_id']=2 ? 'bg-danger': 'bg-green' ?> " value="<?= $linea['estado_id']=2 ? 'Con Omiso': 'Sin Omiso' ?> " disabled readonly required></td>
-                        <th class="text-center"><input type="button" name="editar" class="btn btn-sm btn-warning" value="&#9998;" tokenID="<?= $linea['id_factura'] ?>"/></th>
-                      </tr>
-                    <?php endforeach ?>
-                    </tr>
-                  <?php else: ?>
-                    <strong>No data found</strong>
-                  <?php endif ?>
-                </tbody>
-              </table>
+            <?php 
+            echo"<img src=".$logo_cliente.">";
+            
+            ?>
             </div>
           </div>
         </div>

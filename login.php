@@ -111,7 +111,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             );
             // filtrado de  cuenta activa
             if ($_SESSION['usuario']['cliente']['verificado'] == false){
-              $login_err  =  "Usuario o Emprea No ha sido Verificado por el Staff";
+              $login_err  =  "Emprea No ha sido Verificado por el Staff";
             }
             else{
                 header("location: index.html");
@@ -150,7 +150,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       <div class="col col-auto">
         <div class="row mt-5">
           <div class="card-body shadow-lg p-5 mb-5 bg-body rounded border">
-            <h2 class="display-4 text-center">LOGIN</h2>
+            <h2 class="display-4 text-center"><img src="src/logo.png" width= 192 height=160></h2>
             <div class="text-center"><small class="text-muted">Por favor complete este formulario para ingresar a su cuenta.</small></div>
             <div class="row">
               <div class="justify-content-center align-items-center">

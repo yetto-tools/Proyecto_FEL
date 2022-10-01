@@ -2,6 +2,7 @@
 const botonAgregar = document.querySelectorAll('input[name="editar"]');
 const botonGuardar = document.querySelector("#guardar");
 const botonNuevo = document.querySelector("#nuevo");
+const botonEliminar = document.querySelector("#eliminar");
 // variables para Elentos html 
 const ListaProductos = document.querySelector("#ListaProductos");
 const IdProducto = document.querySelector("#id-producto");
@@ -55,7 +56,7 @@ Formulario.addEventListener("input", (element) =>{
 });
 
 // Funcion para Boton Nuevo 
-botonNuevo.addEventListener("click", (element)=>{
+botonNuevo.addEventListener("click", ()=>{
     DescativarBotonGuardado();
     // si el ID de la impresa esta vacio entoces
     Formulario.classList.add('was-validated')
@@ -71,6 +72,60 @@ botonNuevo.addEventListener("click", (element)=>{
     // volvemos a cargar imagen en blanco
     ImgBase64.value = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH0AAACACAQAAACMha5pAAAAlklEQVR42u3PAQ0AAAwCoNu/9Gu4CQ3IzYq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6unqXBx4gAIE1+BdCAAAAAElFTkSuQmCC";
     // de lo contrario
+});
+async function jsonPost(url = '', data = {}) {
+    // Default options are marked with *
+    const response = await fetch(url, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+    return response.json(); // parses JSON response into native JavaScript objects
+  }
+
+  async function formDELETE(url = '', id) {
+    var formData = new FormData();
+    formData.append("id-producto", id);
+    // Default options are marked with *
+    const response = await fetch(url, {
+      method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        //'Content-Type': 'application/json'
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body:  new URLSearchParams(formData)// body data type must match "Content-Type" header
+    });
+    if(response.status == 202){
+        window.location.replace(url);
+    }
+    return response.status;
+    //return response.json(); // parses JSON response into native JavaScript objects
+  }
+
+botonEliminar.addEventListener("click",()=>{
+    
+	if(IdProducto.value != ""){
+		let url = document.location['origin']+
+		'/Proyecto_FEL/Productos.php';
+        formDELETE(url,IdProducto.value);
+        
+        window.location.replace(url);
+        
+	}
+
 });
 
 NuevoLogo.addEventListener("change", (element)=>{
@@ -94,16 +149,20 @@ NuevoLogo.addEventListener("change", (element)=>{
 const ActivarBotonGuardado = ()=>{
         // quitamos el atributo disabled del boton guardado
         botonGuardar.removeAttribute("disabled");
+        botonEliminar.removeAttribute("disabled");
         // cambiamos la class para cambiar de color
         botonGuardar.classList.replace("btn-outline-secondary", "btn-success");
+        botonEliminar.classList.replace("btn-outline-secondary", "btn-danger");
 };
 
 // Funcion para Activar boton de guardado
 const DescativarBotonGuardado = ()=>{
     // quitamos el atributo disabled del boton guardado
     botonGuardar.setAttribute("disabled", "disabled");
+    botonEliminar.setAttribute("disabled","disabled");
     // cambiamos la class para cambiar de color
     botonGuardar.classList.replace("btn-success","btn-outline-secondary");
+    botonEliminar.classList.replace("btn-danger","btn-outline-secondary");
 };
 
 (() => {
