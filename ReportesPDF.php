@@ -128,8 +128,8 @@ if(!empty($_GET['Reporte-Cliente'])){
             $bytes = file_put_contents($rutaImagenSalida, $imagenBinaria);
             $pdf->Image($rutaImagenSalida, 4,3,-600);
         
-            $file = $pdf->Output("");
-            //$pdf->Output("D",$data[0]['NOMBRE CLIENTE']."- Reporte General".".pdf");
+            //$file = $pdf->Output("");
+            $pdf->Output("D",$data[0]['NOMBRE CLIENTE']."- Reporte Cliente".".pdf");
         }
         if (!empty($certificacion)){
             BasicTable1($certificacion);
@@ -324,7 +324,7 @@ if(!empty($_GET['Reporte-Estatus'])){
             $pdf->SetFont('Arial','B', 18);
             // TITULO
             $pdf->SetXY(7,1);
-            $pdf->Cell(3, 2, 'REPORTE GENERAL', 0, 0);
+            $pdf->Cell(3, 2, 'REPORTE ESTATUS', 0, 0);
             $pdf->SetFont('Arial','B', 10);
             // 
             $pdf->SetXY(13,3);
@@ -404,8 +404,8 @@ if(!empty($_GET['Reporte-Estatus'])){
             $bytes = file_put_contents($rutaImagenSalida, $imagenBinaria);
             $pdf->Image($rutaImagenSalida, 4,3,-600);
         
-            $pdf->Output("");
-            //$pdf->Output("D",$data[0]['NOMBRE']."- Reporte General".".pdf");
+            //$pdf->Output("");
+            $pdf->Output("D",$data[0]['NOMBRE']."- Reporte Estatus".".pdf");
         }
         if (!empty($certificacion)){
             BasicTable1($certificacion);
@@ -459,7 +459,7 @@ if(!empty($_GET['Reporte-SAT'])){
             $pdf->SetFont('Arial','B', 18);
             // TITULO
             $pdf->SetXY(7,1);
-            $pdf->Cell(3, 2, 'REPORTE GENERAL', 0, 0);
+            $pdf->Cell(3, 2, 'REPORTE SAT', 0, 0);
             $pdf->SetFont('Arial','B', 10);
             // 
             $pdf->SetXY(13,3);
@@ -557,8 +557,8 @@ if(!empty($_GET['Reporte-SAT'])){
             $bytes = file_put_contents($rutaImagenSalida, $imagenBinaria);
             $pdf->Image($rutaImagenSalida, 4,3,-600);
         
-            $pdf->Output("");
-            //$pdf->Output("D",$data[0]['NOMBRE']."- Reporte General".".pdf");
+            //$pdf->Output("");
+            $pdf->Output("D",$data[0]['NOMBRE']."- Reporte SAT".".pdf");
         }
         if (!empty($certificacion)){
             BasicTable1($certificacion, $db);

@@ -18,6 +18,7 @@ var inputTotal = document.querySelector('#total');
 
 // poner fecha del dia
 document.querySelector("#fecha").valueAsDate = new Date()
+
 // funcion de boton agregar
 
 var test = "";

@@ -7,17 +7,17 @@ require_once "pdf.php";
 // ----------------------------------------------------
 
 
-function ListarCertificacion($db, $fechaInicial, $fechaFinal, $id_cliente){
-  $sql = "SELECT * FROM factura WHERE `factura`.`cliente_id` = ? and fecha BETWEEN ? AND ?  ORDER BY NIT";  
-  // Listar Empresas
-  $stmt = $db->prepare($sql);
-  $stmt->bind_param("iss",$id_cliente,$fechaInicial,$fechaFinal);
-  $stmt->execute();
-  $result = $stmt->get_result(); // get the mysqli result
-  //$titulos = $result->fetch_assoc();
-  $clientes = $result->fetch_all(MYSQLI_ASSOC); // fetch data  
-  return $clientes;
-}
+// function ListarCertificacion($db, $fechaInicial, $fechaFinal, $id_cliente){
+//   $sql = "SELECT * FROM factura WHERE `factura`.`cliente_id` = ? and fecha BETWEEN ? AND ?  ORDER BY NIT";  
+//   // Listar Empresas
+//   $stmt = $db->prepare($sql);
+//   $stmt->bind_param("iss",$id_cliente,$fechaInicial,$fechaFinal);
+//   $stmt->execute();
+//   $result = $stmt->get_result(); // get the mysqli result
+//   //$titulos = $result->fetch_assoc();
+//   $clientes = $result->fetch_all(MYSQLI_ASSOC); // fetch data  
+//   return $clientes;
+// }
 
 if($_GET){
   $fechaInicial = $_GET['fecha-inicial'];
