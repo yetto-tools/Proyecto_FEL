@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once "session_config.php";
-require('../fpdf/fpdf.php');
+require('PDF/fpdf/fpdf.php');
 require_once "config.php";
 
 //Reporte Cliente
@@ -280,27 +280,29 @@ if(!empty($_GET['Reporte-Estatus'])){
     $id = intval($_GET['Reporte-Estatus']);
     // Contriumos el reporte
     function ReporteGeneralPDF($id_cliente, $db){
-        $sql = "SELECT
-        C.id_cliente,
-        C.nit_cliente,
-        C.nombre_cliente,
-        C.direccion_cliente,
-        C.telefono_cliente,
-        C.verificado,
-        C.creado,
-        C.actualizado,
-        IF(F.estado_id != NULL, "OMISO", "SIN OMISO" ) AS omiso,
-        F.estado_id,
-        F.id_factura,
-        F.nit
+        $sql = "SELECT 
+            C.id_cliente as ID, 
+            C.nit_cliente AS NIT, 
+            C.nombre_cliente AS NOMBRE, 
+            C.direccion_cliente AS DIRECCION, 
+            C.telefono_cliente AS TELEFONO, 
+            C.verificado VERIFICADO, 
+            C.creado FECHA_GENERADO,
+            C.logo_cliente as LOGO, 
+            C.actualizado, 
+            IF(F.estado_id = 2, 'OMISOS', 'SIN OMISO' ) AS OMISO, 
+            F.estado_id, 
+            F.id_factura, 
+            F.nit  AS 'NIT FACTURA'
         FROM cliente C 
-            LEFT JOIN factura F ON F.cliente_id = C.id_cliente
-        GROUP BY id_cliente
-        ORDER BY C.nombre_cliente DESC        
+            LEFT JOIN factura F 
+                ON F.cliente_id = C.id_cliente 
+            GROUP BY id_cliente 
+            ORDER BY C.nombre_cliente ASC;        
         ";  
         // Listar Empresas
         $stmt = $db->prepare($sql);
-        $stmt->bind_param("s",$id_cliente);
+        //$stmt->bind_param("s",$id_cliente);
         $stmt->execute();
         $result = $stmt->get_result(); // get the mysqli result
         //$titulos = $result->fetch_assoc();
@@ -310,7 +312,7 @@ if(!empty($_GET['Reporte-Estatus'])){
         function BasicTable1($data)
         {
             date_default_timezone_set('America/Guatemala');
-            $FechaActual = "Fecha de Generacion: ".date('d-m-y h:i:s');
+            $FechaActual = "Fecha de Estatus: ".date('d-m-y h:i:s');
     
             $pdf = new FPDF('P', 'cm', 'Letter');
             $pdf->AddPage();
@@ -345,24 +347,26 @@ if(!empty($_GET['Reporte-Estatus'])){
             //Restauración de colores y fuentes
             $pdf->SetFillColor(0,0,0);
             $pdf->SetTextColor(255);
-            $pdf->SetFont('','B',12);
-            $pdf->Cell(1, 0.6,"ID",$border,0,'C',$fill);
-            $pdf->SetFont('','B',12);
-            $pdf->Cell(3,0.6,'nit',$border,0,'C',$fill);
-            $pdf->SetFont('','B',12);
-            $pdf->Cell(8,0.6,'EMPRESA',$border,0,'C',$fill);
-            $pdf->SetFont('','B',12);
-            $pdf->Cell(4,0.6,'IVA POR PAGAR',1,0,'C',$fill);
-            $pdf->SetFont('','B',12);
-            $pdf->Cell(4,0.6,'FACTURADO',$border,0,'C',$fill);
+            $pdf->SetFont('Arial','B',8.5);
+            $pdf->Cell(0.9, 0.6,"ID",$border,0,'C',$fill);
+            $pdf->SetFont('Arial','B',8.5);
+            $pdf->Cell(2,0.6,'NIT',$border,0,'C',$fill);
+            $pdf->SetFont('Arial','B',8.5);
+            $pdf->Cell(4.5,0.6,'NOMBRE',$border,0,'C',$fill);
+            $pdf->SetFont('Arial','B',8.5);
+            $pdf->Cell(6,0.6,'DIRECCION',1,0,'C',$fill);
+            $pdf->SetFont('Arial','B',8.5);
+            $pdf->Cell(2,0.6,'ESTATUS',$border,0,'C',$fill);
+            $pdf->Cell(2,0.6,'ID FACTURA',$border,0,'C',$fill);
+            $pdf->Cell(2.5,0.6,'FECHA',$border,0,'C',$fill);
     
             //Datos
             $pdf->Ln();
             $no = 0;
             foreach($data as $row){
-                $pdf->SetFont('Arial','', 12);
+                $pdf->SetFont('Arial','', 8);
                 $pdf->SetX(0.7);
-        
+                $fecha_facura ="";
                 $border = true;
                 $pdf->SetFillColor(255,255,255);
                 $pdf->SetTextColor(0);
@@ -372,11 +376,21 @@ if(!empty($_GET['Reporte-Estatus'])){
                 $creado = explode(" ",$row['FECHA_GENERADO']);
                 $fecha = $creado[0]; 
                 $hora = $creado[1];
-                $pdf->Cell(1.5,0.6,$row["ID"],$border,0,'C');
-                $pdf->Cell(3,0.6,$row['NIT'],$border,0,'C');
-                $pdf->Cell(7.5,0.6,$row['NOMBRE'],$border,0,'C');
-                $pdf->Cell(4,0.6,"Q. " .$row['IVA'],$border,0,'C');
-                $pdf->Cell(4,0.6,"Q. " .$row['TOTAL_FACTURADO'],$border,0,'C');
+                $pdf->Cell(0.9,0.6,$row["ID"],$border,0,'C');
+                $pdf->Cell(2,0.6,$row['NIT'],$border,0,'R');
+                $pdf->Cell(4.5,0.6,$row['NOMBRE'],$border,0,'C');
+                $pdf->Cell(6,0.6,$row['DIRECCION'],$border,0,'C');
+                if($row['OMISO'] =="OMISOS"){
+                  $pdf->SetFillColor(200,0,0);
+                  $fecha_facura =  $row['FECHA_GENERADO'];
+                }else{
+                    $pdf->SetFillColor(0,200,0);
+                    $fecha_facura = "";
+                }
+                $pdf->SetFont('Arial','B', 6.5);
+                $pdf->Cell(2,0.6,$row['OMISO'],$border,0,'C',1);
+                $pdf->Cell(2,0.6,$row['id_factura'],$border,0,'C',0);
+                $pdf->Cell(2.5,0.6,$fecha_facura,$border,0,'C',0);
                 $pdf->Ln();
                 $fill=false;
             }
@@ -390,8 +404,8 @@ if(!empty($_GET['Reporte-Estatus'])){
             $bytes = file_put_contents($rutaImagenSalida, $imagenBinaria);
             $pdf->Image($rutaImagenSalida, 4,3,-600);
         
-            //$pdf->Output("");
-            $pdf->Output("D",$data[0]['NOMBRE']."- Reporte General".".pdf");
+            $pdf->Output("");
+            //$pdf->Output("D",$data[0]['NOMBRE']."- Reporte General".".pdf");
         }
         if (!empty($certificacion)){
             BasicTable1($certificacion);
