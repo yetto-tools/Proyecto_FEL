@@ -424,7 +424,7 @@ if(!empty($_GET['Reporte-Estatus'])){
 
 //Reporte SAT
 if(!empty($_GET['Reporte-SAT'])){
-    $id = intval($_GET['Reporte-General']);
+    $id = intval($_GET['Reporte-SAT']);
     // Contriumos el reporte
     function ReporteGeneralPDF($id_cliente, $db){
         $sql = "SELECT
@@ -433,24 +433,18 @@ if(!empty($_GET['Reporte-SAT'])){
         C.nombre_cliente AS NOMBRE,
         C.direccion_cliente AS DIRECCION,
         C.telefono_cliente AS TELEFONO,
-        C.logo_cliente AS LOGO,
-        sum(distinct F.iva_factura) as IVA,
-        sum(distinct F.total_factura) as TOTAL_FACTURADO,
-        NOW() as 'FECHA_GENERADO'
-        FROM factura F 
-        LEFT JOIN cliente C ON F.cliente_id = C.id_cliente
-        WHERE C.id_cliente = ?
-        group by id_cliente;";  
+        C.logo_cliente AS LOGO
+        FROM cliente C ";  
         // Listar Empresas
         $stmt = $db->prepare($sql);
-        $stmt->bind_param("s",$id_cliente);
+        //$stmt->bind_param("s",$id_cliente);
         $stmt->execute();
         $result = $stmt->get_result(); // get the mysqli result
         //$titulos = $result->fetch_assoc();
         $certificacion = $result->fetch_all(MYSQLI_ASSOC); // fetch data  
         $stmt->close();
     
-        function BasicTable1($data)
+        function BasicTable1($data, $db)
         {
             date_default_timezone_set('America/Guatemala');
             $FechaActual = "Fecha de Generacion: ".date('d-m-y h:i:s');
@@ -481,6 +475,30 @@ if(!empty($_GET['Reporte-SAT'])){
             $pdf->Cell(2, 0.5, 'Telefono', 0, 0);
             $pdf->Cell(4, 0.5, $data[0]['TELEFONO'], 0, 1);
     
+
+            $sql = "SELECT
+            F.id_factura AS ID,
+            F.nit AS NIT_CLIENTE,
+            F.nombre AS NOMBRE,
+            F.direccion AS DIRECCION,
+            F.fecha AS FECHA_FACTURA,
+            F.factura_uuid AS UUID,
+            F.iva_factura AS IVA,
+            F.total_factura  AS TOTAL,
+            F.creado AS FECHA,
+            C.nombre_cliente as EMPRESA,
+            C.nit_cliente as NIT_EMPRESA
+            FROM factura F
+            JOIN cliente C ON C.id_cliente = F.cliente_id
+            WHERE f.estado_id  <> 2 ";  
+            // Listar Empresas
+            $stmt = $db->prepare($sql);
+            //$stmt->bind_param("s",$id_cliente);
+            $stmt->execute();
+            $result = $stmt->get_result(); // get the mysqli result
+            //$titulos = $result->fetch_assoc();
+            $data_facturas = $result->fetch_all(MYSQLI_ASSOC); // fetch data  
+            $stmt->close();
             // // titulo tabla 
             $pdf->SetXY(0.7,6.5);
             $fill = true;
@@ -488,22 +506,26 @@ if(!empty($_GET['Reporte-SAT'])){
             //Restauración de colores y fuentes
             $pdf->SetFillColor(0,0,0);
             $pdf->SetTextColor(255);
-            $pdf->SetFont('','B',12);
-            $pdf->Cell(1, 0.6,"ID",$border,0,'C',$fill);
-            $pdf->SetFont('','B',12);
-            $pdf->Cell(3,0.6,'nit',$border,0,'C',$fill);
-            $pdf->SetFont('','B',12);
-            $pdf->Cell(8,0.6,'EMPRESA',$border,0,'C',$fill);
-            $pdf->SetFont('','B',12);
-            $pdf->Cell(4,0.6,'IVA POR PAGAR',1,0,'C',$fill);
-            $pdf->SetFont('','B',12);
+            $pdf->SetFont('','B',7);
+            $pdf->Cell(0.7, 0.6,"ID",$border,0,'C',$fill);
+            $pdf->SetFont('','B',7);
+            $pdf->Cell(1.5,0.6,'NIT',$border,0,'C',$fill);
+            $pdf->SetFont('','B',7);
+            $pdf->Cell(4,0.6,'EMPRESA',$border,0,'C',$fill);
+            $pdf->SetFont('','B',7);
+            $pdf->Cell(6,0.6,'CLIENTE FACTURA',$border,0,'C',$fill);
+            $pdf->SetFont('','B',7);
+            $pdf->Cell(1.5,0.6,'NIT',$border,0,'C',$fill);
+            $pdf->SetFont('','B',7);
+            $pdf->Cell(2,0.6,'IVA POR PAGAR',1,0,'C',$fill);
+            $pdf->SetFont('','B',7);
             $pdf->Cell(4,0.6,'FACTURADO',$border,0,'C',$fill);
     
             //Datos
             $pdf->Ln();
             $no = 0;
-            foreach($data as $row){
-                $pdf->SetFont('Arial','', 12);
+            foreach($data_facturas as $rowFactura){
+                $pdf->SetFont('Arial','', 6);
                 $pdf->SetX(0.7);
         
                 $border = true;
@@ -512,14 +534,16 @@ if(!empty($_GET['Reporte-SAT'])){
                 $pdf->SetLineWidth(0.01);
                 $no++;
                 
-                $creado = explode(" ",$row['FECHA_GENERADO']);
+                $creado = explode(" ",$rowFactura['FECHA']);
                 $fecha = $creado[0]; 
                 $hora = $creado[1];
-                $pdf->Cell(1.5,0.6,$row["ID"],$border,0,'C');
-                $pdf->Cell(3,0.6,$row['NIT'],$border,0,'C');
-                $pdf->Cell(7.5,0.6,$row['NOMBRE'],$border,0,'C');
-                $pdf->Cell(4,0.6,"Q. " .$row['IVA'],$border,0,'C');
-                $pdf->Cell(4,0.6,"Q. " .$row['TOTAL_FACTURADO'],$border,0,'C');
+                $pdf->Cell(0.7,0.6,$rowFactura["ID"],$border,0,'C');
+                $pdf->Cell(1.5,0.6,$rowFactura['NIT_EMPRESA'],$border,0,'C');
+                $pdf->Cell(4,0.6,$rowFactura['EMPRESA'],$border,0,'C');
+                $pdf->Cell(6,0.6,$rowFactura['NOMBRE'],$border,0,'C');
+                $pdf->Cell(1.5,0.6,$rowFactura['NIT_CLIENTE'],$border,0,'C');
+                $pdf->Cell(2,0.6,"Q. " .$rowFactura['IVA'],$border,0,'C');
+                $pdf->Cell(4,0.6,"Q. " .$rowFactura['TOTAL'],$border,0,'C');
                 $pdf->Ln();
                 $fill=false;
             }
@@ -533,11 +557,11 @@ if(!empty($_GET['Reporte-SAT'])){
             $bytes = file_put_contents($rutaImagenSalida, $imagenBinaria);
             $pdf->Image($rutaImagenSalida, 4,3,-600);
         
-            //$pdf->Output("");
-            $pdf->Output("D",$data[0]['NOMBRE']."- Reporte General".".pdf");
+            $pdf->Output("");
+            //$pdf->Output("D",$data[0]['NOMBRE']."- Reporte General".".pdf");
         }
         if (!empty($certificacion)){
-            BasicTable1($certificacion);
+            BasicTable1($certificacion, $db);
         }
         else{
             echo "No hay Informacion Disponible";
