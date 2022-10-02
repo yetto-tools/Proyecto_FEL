@@ -85,9 +85,13 @@ function CrearFacturaPDF($facturaPDF, $db){
             $bytes = file_put_contents($rutaImagenSalida, $imagenBinaria);
             $pdf->Image($rutaImagenSalida, 2.2,2,-600);
             
-            $pdf->Output();
+            //$pdf->Output;
+
+            $pdf->Output("D", "Factura - " .$data[0]['factura_uuid'].".pdf");
+            
         }
         BasicTable($factura);
+        header("Location: Facturacion.php");
     }
 }
 
@@ -163,7 +167,7 @@ function CrearCertificacionPDF($id_cliente, $fechaInicial, $fechaFinal, $db){
             //$pdf->Output("D", "Factura - " .$data[0]['factura_uuid'].".pdf");
         }
         BasicTable($certificacion);
-        //header("Location: certificacion.php");
+        header("Location: certificacion.php");
     }
 }
 
