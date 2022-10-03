@@ -5,8 +5,11 @@ require_once "config.php";
 require_once "session_config.php";
 require_once "pdf.php";
 
+$uuid_factura ="";
+
 
 if($_POST){
+
   $nit            = trim($_POST["nit"]);
   $nombre         = trim($_POST["nombre"]);
   $direccion      = trim($_POST["direccion"]);
@@ -58,6 +61,7 @@ if($_POST){
         $stmt->bind_result($uuid);
         $stmt->fetch();
         $stmt->close();
+        $uuid_factura = $uuid;
 
         if ($numero != 0 ){
           $contardor_linea = 0;
@@ -83,15 +87,15 @@ if($_POST){
 
         }  
       $db->commit();
-
       // Generar PDF Factura;
       CrearFacturaPDF($numero, $db);
-
-      header("Location: Facturacion.php");
+      
       $mensaje = '<div class="alert alert-info alert-dismissible" role="alert">'
       ."<b> Nombre: ".$nombre." <b>"."<b> Nombre: ".$nit." <b>"
       ."</b></p><p class='fw-bold'>". $numeroFactura."</p>"
       . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+
+      return $uuid_factura;
     }
     catch (Exception $e) {
       $db->rollback();
@@ -99,7 +103,9 @@ if($_POST){
       $e->getMessage()
       . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> </div>';
     } // FIN CATCH
+    header("Refresh:0");
 }
+
 
 
 ?>
@@ -166,7 +172,7 @@ if($_POST){
               <div class="col col-md-6">
                 <div class="row">
                   <label class="col-md-4 col-form-label bg-light"><strong>Factura N°</strong></label>
-                  <div class="col col-lg-7"><input type="text" id="uuidFactura" name="numeroFactura" class="form-control form-control-sm mb-4 bg-ligh fs-bold" placeholder="N° Factura" readonly></div>
+                  <div class="col col-lg-7"><input type="text" id="uuidFactura" name="numeroFactura" class="form-control form-control-sm mb-4 bg-ligh fs-bold" value="<?php echo htmlspecialchars($uuid_factura);?> " placeholder="N° Factura" readonly></div>
                   <div class="col col-lg-7"><input type="hidden" id="numeroFactura" name="numeroFactura" class="form-control form-control-sm mb-4 bg-ligh fs-bold" placeholder="N° Factura" readonly></div>
                 </div>
                 <div class="row">

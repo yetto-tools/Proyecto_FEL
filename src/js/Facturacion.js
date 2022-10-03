@@ -12,7 +12,7 @@ var inputDescuento = document.querySelector('#descuento');
 const inputNITFactura = document.querySelector("#nit");
 const inputNombreFactura = document.querySelector("#nombre");
 const inputDireccionFactura = document.querySelector("#direccion");
-
+var Formulario = document.querySelector("body > div:nth-child(3) > div > div > form");
 
 var inputTotal = document.querySelector('#total');
 
@@ -22,6 +22,14 @@ document.querySelector("#fecha").valueAsDate = new Date()
 // funcion de boton agregar
 
 var test = "";
+
+
+
+botonFirmar.addEventListener('click', (e)=>{
+	Formulario.submit();
+	alert("Factura Generada");
+	Formulario.reset();
+	});
 
 botonBuscar.addEventListener('click', (e)=>{
 	//1234567k
@@ -45,7 +53,6 @@ botonBuscar.addEventListener('click', (e)=>{
 
 
 	});
-
 
 
 botonAgregar.addEventListener('click', (e)=>{
@@ -244,15 +251,3 @@ const uuidv4 =() => {
 	);
 }
 
-// botonFirmar.addEventListener('submit', (event) => {
-// 	let url = document.location['origin']+
-// 	'/Proyecto_FEL/pdf.php?facturaPDF='+'';
-
-// 	fetch(url)
-// 	.then(response => response.json())
-// 	.then(data => {
-		
-// 	})
-// 	.catch(console.log(erro));
-
-// });
